@@ -18,22 +18,19 @@ exports.selectArticle = ({
 
 exports.selectArticleAndUpdate = (update, params) => {
   // console.log(params, "model params")
-  //console.log(update.inc_votes, "request body.inc votes")
-
-  return connection('articles').where('article_id', '=', params.article_id).modify(existingQuery => {
-    if (update !== undefined) {
-      existingQuery.increment("votes", update.inc_votes).returning('*')
-    } else {
-      return Promise.reject({
-        status: 400
-      })
-    }
-  })
+  console.log(update.inc_votes, "request body.inc votes")
+  if (!update.inc_votes) {
+    return Promise.reject({
+      status: 400
+    })
+  }
+  return connection('articles')
+    .where('article_id', '=', params.article_id)
+    .increment("votes", update.inc_votes).returning('*')
   // .then(updatedArticle => {
   //   console.log(updatedArticle, '<---updated article')
   // });
 }
-
 
 
 //This works in sql

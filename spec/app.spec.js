@@ -140,7 +140,7 @@ describe('app', () => {
             })
           })
       });
-      it('PATCH / return status 201 and returns updated article object when passed negative number', () => {
+      it.only('PATCH / return status 201 and returns updated article object when passed negative number', () => {
         return request(app)
           .patch('/api/articles/1')
           .send({
@@ -157,21 +157,18 @@ describe('app', () => {
               topic: 'mitch',
               author: 'butter_bridge',
               body: 'I find this existence challenging',
-              created_at: new Date(1542284514171),
+              created_at: "2018-11-15T12:21:54.171Z",
               votes: 50
             })
           })
       });
-      it.only('PATCH / return status 400 and message of bad request if no update on request body', () => {
+      it('PATCH / return status 400 and message of bad request if no update on request body', () => {
         return request(app)
           .patch('/api/articles/1')
           .expect(400)
       });
     });
-
   });
-
-
 });
 
 
