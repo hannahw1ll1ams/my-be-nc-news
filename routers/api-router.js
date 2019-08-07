@@ -9,5 +9,9 @@ apiRouter.use('/topics', topicRouter);
 apiRouter.use('/users', userRouter);
 apiRouter.use('/articles', articleRouter);
 
+apiRouter.all('/*', (req, res, next) => res.status(404).send({
+  msg: 'Page Not Found'
+}));
+//make this a function
 
 module.exports = apiRouter;

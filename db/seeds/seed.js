@@ -23,12 +23,12 @@ exports.seed = function (knex) {
       return Promise.all([topicsInsertions, usersInsertions])
         .then(() => {
           const reformattedList = formatDates(articleData);
-          console.log(reformattedList, '<-- reformatted list');
+          //console.log(reformattedList, '<-- reformatted list');
           return knex.insert(reformattedList).into('articles').returning("*")
 
         })
         .then(articleRows => {
-          console.log(articleRows, "<--- article rows")
+          //console.log(articleRows, "<--- article rows")
           const articleRef = makeRefObj(articleRows);
           const formattedComments = formatComments(commentData, articleRef);
           return knex('comments').insert(formattedComments);

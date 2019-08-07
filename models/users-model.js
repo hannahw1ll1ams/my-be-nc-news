@@ -7,5 +7,13 @@ exports.selectUser = ({
   return connection
     .from('users')
     .where("username", "=", username)
-    .returning("*");
+    .then(user => {
+      console.log(user, '<---- model user')
+      if (user.length === 0)
+        return Promise.reject({
+          status: 404,
+          msg: "Page Not Found"
+        })
+      else return user;
+    })
 }

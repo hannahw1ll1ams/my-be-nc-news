@@ -4,7 +4,7 @@ exports.formatDates = list => {
   let newDates = list.map(comment => {
     let currentTime = comment.created_at;
     let newDate = new Date(currentTime);
-    console.log(newDate)
+    //console.log(newDate)
     let {
       created_at,
       ...restofComment
