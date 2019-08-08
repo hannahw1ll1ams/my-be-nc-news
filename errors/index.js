@@ -45,3 +45,11 @@ exports.handleServerErrors = (err, req, res, next) => {
     msg: "500 error"
   });
 }
+
+
+
+exports.methodNotAllowed = (req, res, next) => {
+  res.status(405).send({
+    msg: 'Method Not Allowed'
+  })
+}

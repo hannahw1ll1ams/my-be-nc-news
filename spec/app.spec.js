@@ -572,6 +572,56 @@ describe('app', () => {
       //       expect(body.msg).to.eql('Bad Request')
       //     })
       // }); // how would i do this test?
+      it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on articles path', () => {
+        return request(app)
+          .delete('/api/articles')
+          .expect(405)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Method Not Allowed')
+          })
+      });
+      it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on articles path', () => {
+        return request(app)
+          .post('/api/articles/1')
+          .expect(405)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Method Not Allowed')
+          })
+      });
+      it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on users path', () => {
+        return request(app)
+          .delete('/api/users')
+          .expect(405)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Method Not Allowed')
+          })
+      });
+      it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on users path', () => {
+        return request(app)
+          .post('/api/users/butter_bridge')
+          .expect(405)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Method Not Allowed')
+          })
+      });
+      it.only('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on topics path', () => {
+        return request(app)
+          .delete('/api/topics')
+          .expect(405)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Method Not Allowed')
+          })
+      });
     });
   });
 });

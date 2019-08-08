@@ -3,9 +3,18 @@ const {
   getAllTopics
 } = require('../controllers/topic-controller')
 
+const {
+  methodNotAllowed
+} = require('../errors/index')
+
+
 //console.log('topics router')
 
-topicRouter.route('/').get(getAllTopics)
+topicRouter
+  .route('/')
+  .get(getAllTopics)
+  .all(methodNotAllowed);
+
 
 
 module.exports = topicRouter;
