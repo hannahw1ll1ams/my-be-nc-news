@@ -1,7 +1,8 @@
 const commentRouter = require('express').Router();
 
 const {
-  updateCommentById
+  updateCommentById,
+  removeSelectedCommentById
 } = require('../controllers/comment-controller')
 
 const {
@@ -16,6 +17,7 @@ commentRouter
 commentRouter
   .route('/:comment_id')
   .patch(updateCommentById)
+  .delete(removeSelectedCommentById)
   .all(methodNotAllowed)
 
 

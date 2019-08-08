@@ -667,9 +667,10 @@ describe('app', () => {
             expect(body.comment.votes).to.eql(-14)
           })
       });
-      it('PATCH /:comment_id returns status 400 Bad Request when passed a not valid comment_id', () => {
+      //changed these below- might break HAHA
+      it('PATCH /:comment_id returns status 404 Page Not Found when passed a not existing comment_id', () => {
         return request(app)
-          .patch('/api/comme')
+          .patch('/api/comments/393993')
           .send({
             inc_votes: -30
           })
@@ -678,6 +679,19 @@ describe('app', () => {
             body
           }) => {
             expect(body.msg).to.eql('Page Not Found')
+          })
+      });
+      it('PATCH /:comment_id returns status 400 Bad Request when passed a not valid comment_id', () => {
+        return request(app)
+          .patch('/api/comments/animal')
+          .send({
+            inc_votes: -30
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
           })
       });
       it('PATCH / comments return status 405 Method Not Allowed when passed a method with a invalid path', () => {
@@ -729,30 +743,48 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
-      it.only('PATCH /: comment_id returns status 201 and updated votes key on article object when given multiple pieces of information on request body', () => {
+      it('PATCH /: comment_id returns status 201 and updated votes key on article object when given multiple pieces of information on request body', () => {
         return request(app)
           .patch('/api/comments/1')
           .send({
-            favourtie_number: 5,
+            favourite_number: 5,
             inc_votes: 10
           })
-          .expect(201)
+          .expect(200)
           .then(({
             body
           }) => {
-            console.log(body.comment, "<-- body.comment in test")
+            //console.log(body.comment, "<-- body.comment in test")
             expect(body.comment).to.be.an('object')
             expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
             expect(body.comment.votes).to.eql(26)
           })
       });
+      it('DELETE / returns status 204 and no content', () => {
+        return request(app)
+          .delete('/api/comments/2')
+          .expect(204)
+      });
+      it('DELETE / returns status 400 Bad Request if not valid comment id', () => {
+        return request(app)
+          .delete('/api/comments/snake')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it('DELETE / returns status 404 Page Not Found if not existing comment_id', () => {
+        return request(app)
+          .delete('/api/comments/376287')
+          .expect(404)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Page Not Found')
+          })
+      });
     });
   });
 });
-
-
-/*
-201 and returns updated votes key on article object when given multiple pieces of information on request body
-
-
-*/
