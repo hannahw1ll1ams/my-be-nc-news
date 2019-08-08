@@ -1,18 +1,18 @@
 You are now connected to database "nc_news_test" as user "hannahwilliams".
- article_id |                         title                          |    author     
-------------+--------------------------------------------------------+---------------
-          1 | Living in the shadow of a great man                    | butter_bridge
-          2 | Sony Vaio; or, The Laptop                              | icellusedkars
-          3 | Eight pug gifs that remind me of mitch                 | icellusedkars
-          4 | Student SUES Mitch!                                    | rogersop
-          5 | UNCOVERED: catspiracy to bring down democracy          | rogersop
-          6 | A                                                      | icellusedkars
-          7 | Z                                                      | icellusedkars
-          8 | Does Mitch predate civilisation?                       | icellusedkars
-          9 | They're not exactly dogs, are they?                    | butter_bridge
-         10 | Seven inspirational thought leaders from Manchester UK | rogersop
-         11 | Am I a cat?                                            | icellusedkars
-         12 | Moustache                                              | butter_bridge
+ article_id | topic |    author     
+------------+-------+---------------
+          1 | mitch | butter_bridge
+          2 | mitch | icellusedkars
+          3 | mitch | icellusedkars
+          4 | mitch | rogersop
+          5 | cats  | rogersop
+          6 | mitch | icellusedkars
+          7 | mitch | icellusedkars
+          8 | mitch | icellusedkars
+          9 | mitch | butter_bridge
+         10 | mitch | rogersop
+         11 | mitch | icellusedkars
+         12 | mitch | butter_bridge
 (12 rows)
 
  comment_id | article_id |    author     

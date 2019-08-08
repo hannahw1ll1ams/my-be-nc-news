@@ -123,19 +123,37 @@ exports.selectCommentsByArticleId = ({
 exports.getAllArticles = ({
   sort_by = 'created_at',
   order = 'desc',
-  author
+  author,
+  topic,
+  anythingElse
 }) => {
+
+  if ((order != 'asc') && (order != 'desc')) {
+    return Promise.reject({
+      status: 400,
+      msg: 'Bad Request'
+    })
+  }
   return connection
     .select('articles.*')
     .from('articles')
     .count('comments.comment_id as comment_count').leftJoin('comments', 'articles.article_id', '=', 'comments.article_id').groupBy('articles.article_id')
     .orderBy(sort_by, order)
     .modify(articleQuery => {
-      if ("articles.author" === author) {
-        articleQuery.where({
-          author
-        })
+      if (author != undefined) {
+        articleQuery.where("articles.author", '=', author)
       }
+      if (topic != undefined) {
+        articleQuery.where('articles.topic', '=', topic)
+      }
+    })
+    .then(articles => {
+      if (articles.length === 0) {
+        return Promise.reject({
+          status: 400,
+          msg: 'Bad Request'
+        })
+      } else return articles
     })
 }
 

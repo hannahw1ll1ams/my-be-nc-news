@@ -437,20 +437,20 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            console.log(body.articles[0])
+            console.log(body.articles[3])
             expect(body).to.be.an('object')
             expect(body.articles).to.be.an('array')
-            expect(body.articles[0]).to.have.keys('author', 'body', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count')
-            expect(body.articles[0].author).to.eql('rogersop')
-            expect(body.articles[0].body).to.eql('We all love Mitch and his wonderful, unique typing style. ' +
+            expect(body.articles[3]).to.have.keys('author', 'body', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count')
+            expect(body.articles[3].author).to.eql('rogersop')
+            expect(body.articles[3].body).to.eql('We all love Mitch and his wonderful, unique typing style. ' +
               'However, the volume of his typing has ALLEGEDLY burst ' +
               'another students eardrums, and they are now suing for ' +
               'damages')
-            expect(body.articles[0].title).to.eql('Student SUES Mitch!')
-            expect(body.articles[0].article_id).to.eql(4)
-            expect(body.articles[0].topic).to.eql('mitch')
-            expect(body.articles[0].votes).to.eql(0)
-            expect(body.articles[0].comment_count).to.eql('0')
+            expect(body.articles[3].title).to.eql('Student SUES Mitch!')
+            expect(body.articles[3].article_id).to.eql(4)
+            expect(body.articles[3].topic).to.eql('mitch')
+            expect(body.articles[3].votes).to.eql(0)
+            expect(body.articles[3].comment_count).to.eql('0')
           })
       });
       it('GET / returns status 200 and sorts articles by default-date  when not specified', () => {
@@ -490,7 +490,7 @@ describe('app', () => {
             })
           })
       });
-      it.only('GET / returns status 200 and query of author which will filter down the articles by the username specified in query', () => {
+      it('GET / returns status 200 and query of author which will filter down the articles by the username specified in query', () => {
         return request(app)
           .get('/api/articles?author=icellusedkars')
           .expect(200)
@@ -499,14 +499,79 @@ describe('app', () => {
           }) => {
             expect(body.articles[0].author).to.eql('icellusedkars')
             expect(body.articles.length).to.eql(6)
-            expect(body.articles.every(author => author.animal === icellusedkars)).to.be.true;
-
-
+            expect(body.articles.every(article => article.author === 'icellusedkars')).to.be.true;
           })
       });
-      // it('GET / returns status 200 and query of topic which filters the articles by the topic value specified in the query', () => {
-
-      // });
+      it('GET / returns status 200 and query of topic which filters the articles by the topic value specified in the query', () => {
+        return request(app)
+          .get('/api/articles?topic=cats')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.articles[0].topic).to.eql('cats')
+          })
+      });
+      it('GET/ status 400 Bad Request when passed a sortby query by invalid column', () => {
+        return request(app)
+          .get('/api/articles?sort_by=donkey')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it('GET/ status 400 Bad Request when passed a author query which does not exist', () => {
+        return request(app)
+          .get('/api/articles?author=chorizocroquettes')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it('GET/ status 400 Bad Request when passed a topic query which does not exist', () => {
+        return request(app)
+          .get('/api/articles?topic=2345')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it('GET / status 400 Bad Request when passed a invalid order query', () => {
+        return request(app)
+          .get('/api/articles?order=loopdeloop')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it('GET / status 200 success when passed a query that is not defined returns all of articles', () => {
+        return request(app)
+          .get('/api/articles?colour=neonyellow')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.articles.length).to.eql(12)
+          })
+      });
+      // it.only('GET / status 400 Bad Request when passed a query that is not defined', () => {
+      //   return request(app)
+      //     .get('/api/articles?colour=neonyellow')
+      //     .expect(400)
+      //     .then(({
+      //       body
+      //     }) => {
+      //       expect(body.msg).to.eql('Bad Request')
+      //     })
+      // }); // how would i do this test?
     });
   });
 });
