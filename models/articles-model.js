@@ -84,9 +84,29 @@ exports.addCommentToArticle = (newComment, params) => {
 
 exports.selectCommentsByArticleId = ({
   article_id
+}, {
+  sort_by = "comments.created_at",
+  order = 'desc'
 }) => {
   // console.log(article_id, "<-- article_id in model")
-  return connection.select('comment_id', 'author', 'votes', 'created_at', 'body').from('comments').where('comments.article_id', '=', article_id)
+  // console.log(sort_by, "<-- sort_by in model")
+  // console.log(order, "<-- order in model")
+
+  if ((order != 'asc') && (order != 'desc')) {
+    return Promise.reject({
+      status: 400,
+      msg: 'Bad Request'
+    })
+  }
+
+  return connection.select('comment_id', 'author', 'votes', 'created_at', 'body').from('comments').where('comments.article_id', '=', article_id).orderBy(sort_by, order).then(comments => {
+    if (comments.length === 0) {
+      return Promise.reject({
+        status: 404,
+        msg: 'Page Not Found'
+      })
+    } else return comments
+  })
 }
 
 

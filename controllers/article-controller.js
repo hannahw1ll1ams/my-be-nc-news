@@ -44,7 +44,10 @@ exports.postArticleComment = (req, res, next) => {
 
 
 exports.getCommentsByArticleId = (req, res, next) => {
-  selectCommentsByArticleId(req.params).then(comments => {
+  console.log(req.params, "<--- req.params")
+  console.log(req.query, "<--- req.query")
+
+  selectCommentsByArticleId(req.params, req.query).then(comments => {
       console.log(comments, '<--- comments in controller')
       res.status(200).send({
         comments

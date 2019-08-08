@@ -11,6 +11,10 @@ exports.handlePSQLErrors = (err, req, res, next) => {
     '23503': {
       status: 404,
       msg: "Page Not Found"
+    },
+    '42703': {
+      status: 400,
+      msg: 'Bad Request'
     }
   };
   if (psqlBadRequestCodes.hasOwnProperty(err.code)) {

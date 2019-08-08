@@ -325,23 +325,104 @@ describe('app', () => {
             expect(body.comments[0].body).to.eql('What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.')
           })
       })
-      it('GET/ ', () => {
-
+      it('GET/:article_id/comments default returns the comments sorted by created_by time and descending in order from new to old', () => {
+        return request(app)
+          .get('/api/articles/1/comments')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.comments).to.be.sortedBy('created_at', {
+              descending: true
+            })
+          })
+      });
+      it('GET/:article_id/comments returns the comments sorted by any specified collum default descending', () => {
+        return request(app)
+          .get('/api/articles/5/comments?sort_by=author')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.comments).to.be.sortedBy('author', {
+              descending: true
+            })
+          })
+      });
+      it('GET/:article_id/comments returns the comments sorted by default created at and ordered by what specified in query', () => {
+        return request(app)
+          .get('/api/articles/5/comments?sort_by=author&order=asc')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.comments).to.be.sortedBy('created_at', {
+              ascending: true
+            })
+          })
+      });
+      it('GET/:article_id/comments returns the comments sorted by and ordered by what is specified in query', () => {
+        return request(app)
+          .get('/api/articles/5/comments?sort_by=author&order=asc')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.comments).to.be.sortedBy('author', {
+              ascending: true
+            })
+          })
+      });
+      it('GET/:article_id/comments returns status 400 Bad request for a invalid id', () => {
+        return request(app)
+          .get('/api/articles/bananas/comments?sort_by=author&order=asc')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql("Bad Request")
+          })
+      });
+      it('/GET returns status 404 Page Not Found for a not found article_id', () => {
+        return request(app)
+          .get('/api/articles/1909248/comments?sort_by=author')
+          .expect(404)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql("Page Not Found")
+          })
+      });
+      it('/GET returns status 400 Bad Request for a query request to be sorted by a column that does not exist', () => {
+        return request(app)
+          .get('/api/articles/5/comments?sort_by=fruit')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it('/GET returns status 400 Bad Request for a query request to be ordered by a invalid order', () => {
+        return request(app)
+          .get('/api/articles/5/comments?order=pies')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it('/GET returns status 400 Bad Request for a bad query request', () => {
+        return request(app)
+          .get('/api/articles/5/comments?order=pies&sort_by=pigeons')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
       });
     });
   });
 });
-
-
-
-// it('GET / will order houses by default to number of students descending', () => {
-//   return request(app)
-//     .get('/api/houses')
-//     .expect(200)
-//     .then(({
-//       body
-//     }) => {
-//       // console.log(body)
-//       expect(body).to.be.an('object')
-//       expect(body.houses).to.be.sortedBy('student_count', {descending :true})
-// });
