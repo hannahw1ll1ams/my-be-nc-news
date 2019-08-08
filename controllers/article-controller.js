@@ -9,8 +9,9 @@ const {
 
 exports.getArticleById = (req, res, next) => {
   selectArticle(req.params).then(article => {
+      let [articleObj] = article
       res.status(200).send({
-        article
+        article: articleObj
       })
     })
     .catch(err => next(err));
@@ -21,23 +22,25 @@ exports.updateArticleById = (req, res, next) => {
   // console.log(req.body, '<--- req.body')
   // console.log(req.params, '<--- req params')
   selectArticleAndUpdate(req.body, req.params).then(article => {
+      let [articleObj] = article
       // console.log(article, '<--- article')
-      res.status(201).send({
-        article
+      res.status(200).send({
+        article: articleObj
       })
     })
     .catch(err => next(err));
 }
 
 
-exports.postArticleComment = (req, res, next) => {
+exports.postArticleCommentByArticleId = (req, res, next) => {
   //console.log(req.body, "<---req.body, added comment details")
   //console.log(req.params, "<---req.params")
 
   addCommentToArticle(req.body, req.params).then(comment => {
       //console.log(comment, "<---comment in controller")
+      let [commentObj] = comment
       res.status(201).send({
-        comment
+        comment: commentObj
       })
     })
     .catch(err => next(err))

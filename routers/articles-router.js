@@ -3,7 +3,7 @@ const articleRouter = require('express').Router();
 const {
   getArticleById,
   updateArticleById,
-  postArticleComment,
+  postArticleCommentByArticleId,
   getCommentsByArticleId,
   sendAllArticles
 } = require('../controllers/article-controller')
@@ -25,7 +25,7 @@ articleRouter
 
 articleRouter
   .route('/:article_id/comments')
-  .post(postArticleComment)
+  .post(postArticleCommentByArticleId)
   .get(getCommentsByArticleId)
   .all(methodNotAllowed)
 

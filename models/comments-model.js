@@ -46,3 +46,10 @@ exports.selectCommentByIdAndRemove = (params) => {
       } else return comment
     })
 }
+
+/* 
+200 - get
+201 - post
+
+
+*/
