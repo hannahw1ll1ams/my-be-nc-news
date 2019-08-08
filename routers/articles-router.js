@@ -4,8 +4,13 @@ const {
   getArticleById,
   updateArticleById,
   postArticleComment,
-  getCommentsByArticleId
+  getCommentsByArticleId,
+  sendAllArticles
 } = require('../controllers/article-controller')
+
+articleRouter
+  .route('/')
+  .get(sendAllArticles)
 
 articleRouter
   .route('/:article_id')

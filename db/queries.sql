@@ -1,13 +1,16 @@
 \c nc_news_test
-SELECT * FROM comments;
+-- SELECT * FROM comments;
 
-SELECT article_id, title FROM articles;
+SELECT article_id, title, author FROM articles;
 
 SELECT comment_id, article_id, author FROM comments;
 
 SELECT articles.article_id, articles.title, COUNT(comments.comment_id) AS comment_count FROM articles
 LEFT JOIN comments ON articles.article_id = comments.article_id
 GROUP BY articles.article_id;
+
+
+
 
 -- LEFT JOIN means in venn diagramm of articles and comments, articles is on left and all articles will be shown regardless in they have no comments, will come up with 0. If was right join which is on comments, articles without comments wouldn't be shown.
 
@@ -16,7 +19,7 @@ GROUP BY articles.article_id;
 -- LEFT JOIN wizards ON houses.house_id = wizards.house_id
 -- GROUP BY houses.house_id;
 
--- psql -f de/queries.sql > output.txt
+-- psql -f db/queries.sql > output.txt
 
 
 

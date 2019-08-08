@@ -119,6 +119,8 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
+
+
       it('PATCH / returns status 201 and returns updated article object when passed positive number', () => {
         return request(app)
           .patch('/api/articles/1')
@@ -209,6 +211,8 @@ describe('app', () => {
             })
           })
       });
+
+
       it('POST / returns status 201 and new comment added to article', () => {
         return request(app)
           .post('/api/articles/5/comments')
@@ -311,6 +315,8 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
+
+
       it('GET / responds with status 200 and an array of comments for the given `article_id` of which each comment should have the correct properties', () => {
         return request(app)
           .get('/api/articles/5/comments')
@@ -383,7 +389,7 @@ describe('app', () => {
             expect(body.msg).to.eql("Bad Request")
           })
       });
-      it('/GET returns status 404 Page Not Found for a not found article_id', () => {
+      it('GET /returns status 404 Page Not Found for a not found article_id', () => {
         return request(app)
           .get('/api/articles/1909248/comments?sort_by=author')
           .expect(404)
@@ -393,7 +399,7 @@ describe('app', () => {
             expect(body.msg).to.eql("Page Not Found")
           })
       });
-      it('/GET returns status 400 Bad Request for a query request to be sorted by a column that does not exist', () => {
+      it('GET / returns status 400 Bad Request for a query request to be sorted by a column that does not exist', () => {
         return request(app)
           .get('/api/articles/5/comments?sort_by=fruit')
           .expect(400)
@@ -403,7 +409,7 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
-      it('/GET returns status 400 Bad Request for a query request to be ordered by a invalid order', () => {
+      it('GET / returns status 400 Bad Request for a query request to be ordered by a invalid order', () => {
         return request(app)
           .get('/api/articles/5/comments?order=pies')
           .expect(400)
@@ -413,7 +419,7 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
-      it('/GET returns status 400 Bad Request for a bad query request', () => {
+      it('GET / returns status 400 Bad Request for a bad query request', () => {
         return request(app)
           .get('/api/articles/5/comments?order=pies&sort_by=pigeons')
           .expect(400)
@@ -423,6 +429,84 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
+
+      it('GET / returns status 200 and returns array of article objects', () => {
+        return request(app)
+          .get('/api/articles')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            console.log(body.articles[0])
+            expect(body).to.be.an('object')
+            expect(body.articles).to.be.an('array')
+            expect(body.articles[0]).to.have.keys('author', 'body', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count')
+            expect(body.articles[0].author).to.eql('rogersop')
+            expect(body.articles[0].body).to.eql('We all love Mitch and his wonderful, unique typing style. ' +
+              'However, the volume of his typing has ALLEGEDLY burst ' +
+              'another students eardrums, and they are now suing for ' +
+              'damages')
+            expect(body.articles[0].title).to.eql('Student SUES Mitch!')
+            expect(body.articles[0].article_id).to.eql(4)
+            expect(body.articles[0].topic).to.eql('mitch')
+            expect(body.articles[0].votes).to.eql(0)
+            expect(body.articles[0].comment_count).to.eql('0')
+          })
+      });
+      it('GET / returns status 200 and sorts articles by default-date  when not specified', () => {
+        return request(app)
+          .get('/api/articles')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            //console.log(body.articles)
+            expect(body.articles).to.be.sortedBy('created_at', {
+              descending: true
+            })
+          })
+      });
+      it('GET / returns status 200 and sorts articles by whatever column is specified in query', () => {
+        return request(app)
+          .get('/api/articles?sort_by=topic')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.articles).to.be.sortedBy('topic', {
+              descending: true
+            })
+          })
+      });
+      it('GET / returns status 200 and sorts a column depending if passed', () => {
+        return request(app)
+          .get('/api/articles?order=asc')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.articles).to.be.sortedBy('created_at', {
+              ascending: true
+            })
+          })
+      });
+      it.only('GET / returns status 200 and query of author which will filter down the articles by the username specified in query', () => {
+        return request(app)
+          .get('/api/articles?author=icellusedkars')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.articles[0].author).to.eql('icellusedkars')
+            expect(body.articles.length).to.eql(6)
+            expect(body.articles.every(author => author.animal === icellusedkars)).to.be.true;
+
+
+          })
+      });
+      // it('GET / returns status 200 and query of topic which filters the articles by the topic value specified in the query', () => {
+
+      // });
     });
   });
 });

@@ -2,7 +2,8 @@ const {
   selectArticle,
   selectArticleAndUpdate,
   addCommentToArticle,
-  selectCommentsByArticleId
+  selectCommentsByArticleId,
+  getAllArticles
 } = require('../models/articles-model')
 
 
@@ -54,4 +55,13 @@ exports.getCommentsByArticleId = (req, res, next) => {
       })
     })
     .catch(err => next(err))
+}
+
+
+exports.sendAllArticles = (req, res, next) => {
+  getAllArticles(req.query).then(articles => {
+    res.status(200).send({
+      articles
+    })
+  })
 }

@@ -110,8 +110,37 @@ exports.selectCommentsByArticleId = ({
 }
 
 
+// exports.getAllArticles = () => {
+//   return connection
+//     .select('articles.author', 'articles.title', 'articles.article_id', 'articles.topic', 'articles.created_at', 'articles.votes', 'comment_count')
+//     .from('articles')
+//     .count('comments.comment_id as comment_count')
+//     .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
+//     .groupBy('articles.article_id')
+
+// }
+
+exports.getAllArticles = ({
+  sort_by = 'created_at',
+  order = 'desc',
+  author
+}) => {
+  return connection
+    .select('articles.*')
+    .from('articles')
+    .count('comments.comment_id as comment_count').leftJoin('comments', 'articles.article_id', '=', 'comments.article_id').groupBy('articles.article_id')
+    .orderBy(sort_by, order)
+    .modify(articleQuery => {
+      if ("articles.author" === author) {
+        articleQuery.where({
+          author
+        })
+      }
+    })
+}
 
 
+// 
 
 
 //This works in sql
