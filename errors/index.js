@@ -1,12 +1,23 @@
 //psql errors
 exports.handlePSQLErrors = (err, req, res, next) => {
   console.log(err, '<-- PSQL error')
-  const psqlBadRequestCodes = ['22P02'];
-  if (psqlBadRequestCodes.includes(err.code))
-    res.status(400).send({
+
+
+  const psqlBadRequestCodes = {
+    '22P02': {
+      status: 400,
       msg: 'Bad Request'
+    },
+    '23503': {
+      status: 404,
+      msg: "Page Not Found"
+    }
+  };
+  if (psqlBadRequestCodes.hasOwnProperty(err.code)) {
+    res.status(psqlBadRequestCodes[err.code].status).send({
+      msg: psqlBadRequestCodes[err.code].msg
     });
-  else next(err);
+  } else next(err);
 }
 
 

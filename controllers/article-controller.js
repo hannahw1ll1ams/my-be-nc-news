@@ -1,6 +1,8 @@
 const {
   selectArticle,
-  selectArticleAndUpdate
+  selectArticleAndUpdate,
+  addCommentToArticle,
+  selectCommentsByArticleId
 } = require('../models/articles-model')
 
 
@@ -24,4 +26,29 @@ exports.updateArticleById = (req, res, next) => {
       })
     })
     .catch(err => next(err));
+}
+
+
+exports.postArticleComment = (req, res, next) => {
+  //console.log(req.body, "<---req.body, added comment details")
+  //console.log(req.params, "<---req.params")
+
+  addCommentToArticle(req.body, req.params).then(comment => {
+      //console.log(comment, "<---comment in controller")
+      res.status(201).send({
+        comment
+      })
+    })
+    .catch(err => next(err))
+}
+
+
+exports.getCommentsByArticleId = (req, res, next) => {
+  selectCommentsByArticleId(req.params).then(comments => {
+      console.log(comments, '<--- comments in controller')
+      res.status(200).send({
+        comments
+      })
+    })
+    .catch(err => next(err))
 }

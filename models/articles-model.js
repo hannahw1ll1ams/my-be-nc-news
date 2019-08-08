@@ -18,10 +18,11 @@ exports.selectArticle = ({
 
 exports.selectArticleAndUpdate = (update, params) => {
   // console.log(params, "model params")
-  console.log(update.inc_votes, "request body.inc votes")
+  //console.log(update.inc_votes, "request body.inc votes")
   if (!update.inc_votes) {
     return Promise.reject({
-      status: 400
+      status: 400,
+      msg: 'Bad Request'
     })
   }
   return connection('articles')
@@ -30,7 +31,67 @@ exports.selectArticleAndUpdate = (update, params) => {
   // .then(updatedArticle => {
   //   console.log(updatedArticle, '<---updated article')
   // });
+  //NOT WHERE MODIFY SHOULD BE USED
 }
+
+
+
+exports.addCommentToArticle = (newComment, params) => {
+  const {
+    username,
+    body
+  } = newComment;
+
+  const author = username;
+  const newDate = Date.now();
+  const created_at = new Date(newDate);
+
+  const {
+    article_id
+  } = params
+
+  //console.log(article_id)
+  //console.log(newComment.body, "<--- model req.body.body")
+  //console.log(params, "<--- model params")
+
+  //need to think how else can violate schema
+  if (typeof (newComment.body) === 'number') {
+    return Promise.reject({
+      status: 400,
+      msg: 'Bad Request'
+    })
+  }
+
+  if ((!newComment.body) || (!newComment.username)) {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request"
+    })
+  }
+
+  return connection
+    .insert({
+      author,
+      body,
+      article_id,
+      created_at
+    })
+    .into('comments')
+    .returning('*')
+}
+
+
+
+exports.selectCommentsByArticleId = ({
+  article_id
+}) => {
+  // console.log(article_id, "<-- article_id in model")
+  return connection.select('comment_id', 'author', 'votes', 'created_at', 'body').from('comments').where('comments.article_id', '=', article_id)
+}
+
+
+
+
 
 
 //This works in sql
