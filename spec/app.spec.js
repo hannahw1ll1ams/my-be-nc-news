@@ -85,7 +85,7 @@ describe('app', () => {
     });
 
 
-    describe.only('/articles', () => {
+    describe('/articles', () => {
       it('GET / returns status 200 & returns array containing specific article object with all the correct keys and a comment count of all the comments left by this id', () => {
         return request(app)
           .get('/api/articles/2')
@@ -612,7 +612,7 @@ describe('app', () => {
             expect(body.msg).to.eql('Method Not Allowed')
           })
       });
-      it.only('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on topics path', () => {
+      it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on topics path', () => {
         return request(app)
           .delete('/api/topics')
           .expect(405)
@@ -622,6 +622,137 @@ describe('app', () => {
             expect(body.msg).to.eql('Method Not Allowed')
           })
       });
+      it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on topics path', () => {
+        return request(app)
+          .post('/api/topics/mitch')
+          .expect(405)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Method Not Allowed')
+          })
+      });
+    });
+
+
+    describe('/comments', () => {
+      it('PATCH /:comment_id returns status 200 and updated votes count when passed a positive number', () => {
+        return request(app)
+          .patch('/api/comments/1')
+          .send({
+            inc_votes: 10
+          })
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            //console.log(body.comment, '<----')
+            expect(body.comment).to.be.an('object')
+            expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
+            expect(body.comment.votes).to.eql(26)
+          })
+      });
+      it('PATCH /:comment_id returns status 200 and updated votes count when passed a negative number', () => {
+        return request(app)
+          .patch('/api/comments/1')
+          .send({
+            inc_votes: -30
+          })
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.comment).to.be.an('object')
+            expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
+            expect(body.comment.votes).to.eql(-14)
+          })
+      });
+      it('PATCH /:comment_id returns status 400 Bad Request when passed a not valid comment_id', () => {
+        return request(app)
+          .patch('/api/comme')
+          .send({
+            inc_votes: -30
+          })
+          .expect(404)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Page Not Found')
+          })
+      });
+      it('PATCH / comments return status 405 Method Not Allowed when passed a method with a invalid path', () => {
+        return request(app)
+          .patch('/api/comments')
+          .send({
+            inc_votes: 45
+          })
+          .expect(405)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Method Not Allowed')
+          })
+      });
+      it('POST / comments/ :comment_id return status 405 when passed a invalid path to http method', () => {
+        return request(app)
+          .post('/api/comments/2')
+          .send({
+            inc_votes: 63
+          })
+          .expect(405)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Method Not Allowed')
+          })
+      });
+      it('PATCH / :comment_id returns status 400 Bad Request if no upate on request body', () => {
+        return request(app)
+          .patch('/api/comments/2')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it('PATCH /: comment_id returns status 400 Bad Request if wrong type of data provided in request', () => {
+        return request(app)
+          .patch('/api/comments/3')
+          .send({
+            inc_votes: 'peanuts'
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it.only('PATCH /: comment_id returns status 201 and updated votes key on article object when given multiple pieces of information on request body', () => {
+        return request(app)
+          .patch('/api/comments/1')
+          .send({
+            favourtie_number: 5,
+            inc_votes: 10
+          })
+          .expect(201)
+          .then(({
+            body
+          }) => {
+            console.log(body.comment, "<-- body.comment in test")
+            expect(body.comment).to.be.an('object')
+            expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
+            expect(body.comment.votes).to.eql(26)
+          })
+      });
     });
   });
 });
+
+
+/*
+201 and returns updated votes key on article object when given multiple pieces of information on request body
+
+
+*/

@@ -124,8 +124,7 @@ exports.getAllArticles = ({
   sort_by = 'created_at',
   order = 'desc',
   author,
-  topic,
-  anythingElse
+  topic
 }) => {
 
   if ((order != 'asc') && (order != 'desc')) {

@@ -9,7 +9,7 @@ SELECT articles.article_id, articles.title, COUNT(comments.comment_id) AS commen
 LEFT JOIN comments ON articles.article_id = comments.article_id
 GROUP BY articles.article_id;
 
-SELECT * FROM users;
+SELECT * FROM comments;
 
 
 

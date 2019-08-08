@@ -15,6 +15,11 @@ topicRouter
   .get(getAllTopics)
   .all(methodNotAllowed);
 
+topicRouter
+  .route('/:username')
+  .all(methodNotAllowed);
+
+
 
 
 module.exports = topicRouter;

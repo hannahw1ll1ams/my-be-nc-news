@@ -60,7 +60,7 @@ exports.getCommentsByArticleId = (req, res, next) => {
 
 exports.sendAllArticles = (req, res, next) => {
   getAllArticles(req.query).then(articles => {
-      console.log(articles, "<--- articles in controller")
+      //console.log(articles, "<--- articles in controller")
       res.status(200).send({
         articles
       })
