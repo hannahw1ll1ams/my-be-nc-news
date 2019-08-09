@@ -28,9 +28,14 @@ exports.selectArticleAndUpdate = (update, params) => {
   return connection('articles')
     .where('article_id', '=', params.article_id)
     .increment("votes", update.inc_votes).returning('*')
-  // .then(updatedArticle => {
-  //   console.log(updatedArticle, '<---updated article')
-  // });
+    .then(updatedArticle => {
+      if (updatedArticle.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: 'Page Not Found'
+        })
+      } else return updatedArticle
+    });
   //NOT WHERE MODIFY SHOULD BE USED
 }
 

@@ -175,6 +175,32 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
+      it('PATCH / return status 400 and message of bad request if article id is invalid', () => {
+        return request(app)
+          .patch('/api/articles/dog')
+          .send({
+            inc_votes: -50
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Bad Request')
+          })
+      });
+      it('PATCH / return status 404 and message of Page Not Found if article id is not existing', () => {
+        return request(app)
+          .patch('/api/articles/398742')
+          .send({
+            inc_votes: -50
+          })
+          .expect(404)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.eql('Page Not Found')
+          })
+      });
       it('PATCH / return status 400 and message of bad request if wrong type of data provided in request', () => {
         return request(app)
           .patch('/api/articles/1')
@@ -224,7 +250,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            console.log(body)
+            // console.log(body)
             expect(body.comment).to.have.keys("comment_id", "author", "article_id", "votes", "created_at", "body")
             expect(body.comment.comment_id).to.eql(19)
             expect(body.comment.author).to.eql("butter_bridge")
@@ -438,7 +464,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            console.log(body.articles[3])
+            // console.log(body.articles[3])
             expect(body).to.be.an('object')
             expect(body.articles).to.be.an('array')
             expect(body.articles[3]).to.have.keys('author', 'body', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count')

@@ -32,12 +32,12 @@ exports.selectCommentByIdAndUpdate = (params, commentBody) => {
 }
 
 exports.selectCommentByIdAndRemove = (params) => {
-  console.log(params.comment_id)
+  // console.log(params.comment_id)
   return connection('comments')
     .where('comments.comment_id', '=', params.comment_id)
     .del()
     .then(comment => {
-      console.log(comment)
+      // console.log(comment)
       if (comment === 0) {
         return Promise.reject({
           status: 404,
