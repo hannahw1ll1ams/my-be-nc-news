@@ -3,10 +3,9 @@ const {
 } = require('../models/users-model')
 
 exports.getUserByUsername = (req, res, next) => {
-  selectUser(req.params).then(user => {
-      let [userObj] = user
+  selectUser(req.params).then(([user]) => {
       res.status(200).send({
-        user: userObj
+        user
       })
     })
     .catch(err => next(err));

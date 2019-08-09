@@ -48,9 +48,6 @@ exports.addCommentToArticle = ({
 }) => {
 
   const author = username;
-  const newDate = Date.now();
-  const created_at = new Date(newDate);
-
   if (typeof (body) === 'number') {
     return Promise.reject({
       status: 400,
@@ -61,8 +58,7 @@ exports.addCommentToArticle = ({
     .insert({
       author,
       body,
-      article_id,
-      created_at
+      article_id
     })
     .into('comments')
     .returning('*')

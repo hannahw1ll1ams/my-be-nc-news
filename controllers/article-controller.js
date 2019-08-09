@@ -8,10 +8,9 @@ const {
 
 
 exports.getArticleById = (req, res, next) => {
-  selectArticle(req.params).then(article => {
-      let [articleObj] = article
+  selectArticle(req.params).then(([article]) => {
       res.status(200).send({
-        article: articleObj
+        article
       })
     })
     .catch(err => next(err));
@@ -19,10 +18,9 @@ exports.getArticleById = (req, res, next) => {
 
 
 exports.updateArticleById = (req, res, next) => {
-  selectArticleAndUpdate(req.body, req.params).then(article => {
-      let [articleObj] = article
+  selectArticleAndUpdate(req.body, req.params).then(([article]) => {
       res.status(200).send({
-        article: articleObj
+        article
       })
     })
     .catch(err => next(err));
@@ -30,10 +28,9 @@ exports.updateArticleById = (req, res, next) => {
 
 
 exports.postArticleCommentByArticleId = (req, res, next) => {
-  addCommentToArticle(req.body, req.params).then(comment => {
-      let [commentObj] = comment
+  addCommentToArticle(req.body, req.params).then(([comment]) => {
       res.status(201).send({
-        comment: commentObj
+        comment
       })
     })
     .catch(err => next(err))

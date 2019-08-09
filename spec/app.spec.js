@@ -343,7 +343,7 @@ describe('app', () => {
             expect(body.comments[0].body).to.eql('What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.')
           })
       })
-      it('GET/:article_id/comments default returns the comments sorted by created_by time and descending in order from new to old', () => {
+      it('GET/:article_id/comments default returns the comments sorted by created_at and descending in order from new to old', () => {
         return request(app)
           .get('/api/articles/1/comments')
           .expect(200)
@@ -355,7 +355,7 @@ describe('app', () => {
             })
           })
       });
-      it('GET/:article_id/comments returns the comments sorted by any specified collum default descending', () => {
+      it('GET/:article_id/comments returns the comments sorted by any specified column default descending', () => {
         return request(app)
           .get('/api/articles/5/comments?sort_by=author')
           .expect(200)
@@ -369,11 +369,12 @@ describe('app', () => {
       });
       it('GET/:article_id/comments returns the comments sorted by default created at and ordered by what specified in query', () => {
         return request(app)
-          .get('/api/articles/5/comments?sort_by=author&order=asc')
+          .get('/api/articles/1/comments?order=asc')
           .expect(200)
           .then(({
             body
           }) => {
+            console.log(body, "<---- body in test")
             expect(body.comments).to.be.sortedBy('created_at', {
               ascending: true
             })
@@ -452,10 +453,7 @@ describe('app', () => {
             expect(body.articles).to.be.an('array')
             expect(body.articles[3]).to.have.keys('author', 'body', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count')
             expect(body.articles[3].author).to.eql('rogersop')
-            expect(body.articles[3].body).to.eql('We all love Mitch and his wonderful, unique typing style. ' +
-              'However, the volume of his typing has ALLEGEDLY burst ' +
-              'another students eardrums, and they are now suing for ' +
-              'damages')
+            expect(body.articles[3].body).to.eql('We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages')
             expect(body.articles[3].title).to.eql('Student SUES Mitch!')
             expect(body.articles[3].article_id).to.eql(4)
             expect(body.articles[3].topic).to.eql('mitch')
@@ -571,16 +569,18 @@ describe('app', () => {
             expect(body.articles.length).to.eql(12)
           })
       });
-      // it.only('GET / status 400 Bad Request when passed a query that is not defined', () => {
-      //   return request(app)
-      //     .get('/api/articles?colour=neonyellow')
-      //     .expect(400)
-      //     .then(({
-      //       body
-      //     }) => {
-      //       expect(body.msg).to.eql('Bad Request')
-      //     })
-      // }); // how would i do this test?
+      it('GET / status 200 ignoring invalid queries and serves back array of article objects sorted and ordered by defaults', () => {
+        return request(app)
+          .get('/api/articles?colour=neonyellow')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.articles).to.be.sortedBy('created_at', {
+              descending: true
+            })
+          })
+      });
       it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on articles path', () => {
         return request(app)
           .delete('/api/articles')

@@ -6,10 +6,9 @@ const {
 
 exports.updateCommentById = (req, res, next) => {
   selectCommentByIdAndUpdate(req.params, req.body)
-    .then(comment => {
-      let [commentObj] = comment
+    .then(([comment]) => {
       res.status(200).send({
-        comment: commentObj
+        comment
       })
     }).catch(err => next(err))
 }
