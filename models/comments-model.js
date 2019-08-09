@@ -1,15 +1,20 @@
 const connection = require("../db/connection");
 
-exports.selectCommentByIdAndUpdate = (params, commentBody) => {
-  if (!commentBody.inc_votes) {
+exports.selectCommentByIdAndUpdate = ({
+  comment_id
+}, {
+  inc_votes
+}) => {
+
+  if (!inc_votes) {
     return Promise.reject({
       status: 400,
       msg: 'Bad Request'
     })
   }
   return connection('comments')
-    .where('comments.comment_id', '=', params.comment_id)
-    .increment("votes", commentBody.inc_votes)
+    .where('comments.comment_id', '=', comment_id)
+    .increment("votes", inc_votes)
     .returning('*')
     .then(comments => {
       if (comments.length === 0) {
@@ -21,9 +26,11 @@ exports.selectCommentByIdAndUpdate = (params, commentBody) => {
     })
 }
 
-exports.selectCommentByIdAndRemove = (params) => {
+exports.selectCommentByIdAndRemove = ({
+  comment_id
+}) => {
   return connection('comments')
-    .where('comments.comment_id', '=', params.comment_id)
+    .where('comments.comment_id', '=', comment_id)
     .del()
     .then(comment => {
       if (comment === 0) {

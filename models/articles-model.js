@@ -15,16 +15,20 @@ exports.selectArticle = ({
     })
 }
 
-exports.selectArticleAndUpdate = (update, params) => {
-  if (!update.inc_votes) {
+exports.selectArticleAndUpdate = ({
+  inc_votes
+}, {
+  article_id
+}) => {
+  if (!inc_votes) {
     return Promise.reject({
       status: 400,
       msg: 'Bad Request'
     })
   }
   return connection('articles')
-    .where('article_id', '=', params.article_id)
-    .increment("votes", update.inc_votes).returning('*')
+    .where('article_id', '=', article_id)
+    .increment("votes", inc_votes).returning('*')
     .then(updatedArticle => {
       if (updatedArticle.length === 0) {
         return Promise.reject({
@@ -36,27 +40,21 @@ exports.selectArticleAndUpdate = (update, params) => {
 }
 
 
-exports.addCommentToArticle = (newComment, params) => {
-  const {
-    username,
-    body
-  } = newComment;
+exports.addCommentToArticle = ({
+  username,
+  body
+}, {
+  article_id
+}) => {
+
   const author = username;
   const newDate = Date.now();
   const created_at = new Date(newDate);
-  const {
-    article_id
-  } = params
-  if (typeof (newComment.body) === 'number') {
+
+  if (typeof (body) === 'number') {
     return Promise.reject({
       status: 400,
       msg: 'Bad Request'
-    })
-  }
-  if ((!newComment.body) || (!newComment.username)) {
-    return Promise.reject({
-      status: 400,
-      msg: "Bad Request"
     })
   }
   return connection
@@ -78,7 +76,7 @@ exports.selectCommentsByArticleId = ({
   sort_by = "comments.created_at",
   order = 'desc'
 }) => {
-  if ((order != 'asc') && (order != 'desc')) {
+  if ((order !== 'asc') && (order !== 'desc')) {
     return Promise.reject({
       status: 400,
       msg: 'Bad Request'
@@ -101,7 +99,7 @@ exports.getAllArticles = ({
   author,
   topic
 }) => {
-  if ((order != 'asc') && (order != 'desc')) {
+  if ((order !== 'asc') && (order !== 'desc')) {
     return Promise.reject({
       status: 400,
       msg: 'Bad Request'
@@ -113,10 +111,10 @@ exports.getAllArticles = ({
     .count('comments.comment_id as comment_count').leftJoin('comments', 'articles.article_id', '=', 'comments.article_id').groupBy('articles.article_id')
     .orderBy(sort_by, order)
     .modify(articleQuery => {
-      if (author != undefined) {
+      if (author !== undefined) {
         articleQuery.where("articles.author", '=', author)
       }
-      if (topic != undefined) {
+      if (topic !== undefined) {
         articleQuery.where('articles.topic', '=', topic)
       }
     })
