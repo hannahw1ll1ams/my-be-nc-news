@@ -2,26 +2,105 @@
   "GET /api": {
     "description": "serves up a json representation of all the available endpoints of the api"
   },
+
+
   "GET /api/topics": {
     "description": "serves an array of all topics",
     "queries": [],
     "exampleResponse": {
-      "topics": [{ "slug": "football", "description": "Footie!" }]
+      "topics": [{
+        "slug": "football",
+        "description": "Footie!"
+      }]
     }
   },
+
+
   "GET /api/articles": {
     "description": "serves an array of all topics",
     "queries": ["author", "topic", "sort_by", "order"],
     "exampleResponse": {
-      "articles": [
-        {
-          "title": "Seafood substitutions are increasing",
-          "topic": "cooking",
-          "author": "weegembump",
-          "body": "Text from the article..",
-          "created_at": 1527695953341
-        }
-      ]
+      "articles": [{
+        "title": "Seafood substitutions are increasing",
+        "topic": "cooking",
+        "author": "weegembump",
+        "body": "Text from the article..",
+        "created_at": 1527695953341
+      }]
     }
-  }
+  },
+
+  "GET /api/articles/:article_id": {
+    "description": "serves a object of article specified by article_id",
+    "exampleResponse": {
+      "author": "butter_bridge",
+      "title": "Living in the shadow of a great man",
+      "article_id": 1,
+      "body": "I find this existence challenging",
+      "topic": "mitch",
+      "created_at": "2018-11-1512:21:54.171+00",
+      "votes": 100,
+      "comment_count": ""
+    }
+  },
+
+  "PATCH /api/articles/:article_id": {
+    "description": "updates a specified article object's votes property value to increment or decrement by what is sent by user in request and serves the updated article object",
+    "exampleResponse": {
+      "article_id": 1,
+      "title": "Living in the shadow of a great man",
+      "topic": "mitch",
+      "author": "butter_bridge",
+      "body": "I find this existence challenging",
+      "created_at": "2018-11-15T12:21:54.171Z",
+      "votes": 101
+    }
+  },
+
+
+  "GET / api/articles/:article_id/comments": {},
+
+
+  "POST /api/articles/:articles_id/comments": {},
+
+
+
+
+
+
+  "GET /api/users/:username": {
+    "description": "serves a user object specified by username",
+    "exampleResponse": {
+      "username": "butter_bridge",
+      "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+      "name": "jonny"
+    }
+
+  },
+
+
+
+
+
+  "PATCH /api/comments/:comment_id": {},
+
+  "DELETE /api/comments/:comment_id": {}
+
+
+
 }
+
+/*
+DONE
+// GET / api / topics
+// GET / api / articles
+// GET / api
+// GET / api / articles /: article_id
+// PATCH / api / articles /: article_id
+// POST / api / articles /: article_id / comments
+// GET / api / articles /: article_id / comments
+// GET / api / users /: username
+// PATCH / api / comments /: comment_id
+// DELETE / api / comments /: comment_id
+
+*/

@@ -8,7 +8,6 @@ exports.selectUser = ({
     .from('users')
     .where("username", "=", username)
     .then(user => {
-      // console.log(user, '<---- model user')
       if (user.length === 0)
         return Promise.reject({
           status: 404,

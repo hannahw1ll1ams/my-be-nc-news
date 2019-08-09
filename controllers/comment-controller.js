@@ -5,8 +5,6 @@ const {
 
 
 exports.updateCommentById = (req, res, next) => {
-  // console.log(req.params, '<-- req.params')
-  // console.log(req.body, '<-- req.body')
   selectCommentByIdAndUpdate(req.params, req.body)
     .then(comment => {
       let [commentObj] = comment

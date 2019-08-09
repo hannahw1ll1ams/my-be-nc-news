@@ -90,7 +90,6 @@ describe('formatDates', () => {
   });
 })
 
-
 describe('makeRefObj', () => {
   it('takes a empty array, returns a empty object', () => {
     let input = [];
@@ -158,9 +157,6 @@ describe('makeRefObj', () => {
     }]);
   });
 });
-
-
-
 
 describe('formatComments', () => {
   it('if passed empty array, return empty array', () => {
@@ -268,49 +264,3 @@ describe('formatComments', () => {
     ]);
   });
 });
-
-
-
-// topics: [{
-//   description: 'The man, the Mitch, the legend',
-//   slug: 'mitch',
-// }]
-
-
-// users: [{
-//   username: 'butter_bridge',
-//   name: 'jonny',
-//   avatar_url: 'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
-// }]
-
-
-// articles: [{
-//   title: 'Living in the shadow of a great man',
-//   topic: 'mitch',
-//   author: 'butter_bridge',
-//   body: 'I find this existence challenging',
-//   created_at: 1542284514171,
-//   votes: 100,
-// }]
-
-//NEEDS 
-//A ARTICLE ID INTEGER, 
-//topic references topics.slug, 
-//author references users.username
-
-
-
-
-// comments: [{
-//   body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
-//   belongs_to: "They're not exactly dogs, are they?",
-//   created_by: 'butter_bridge',
-//   votes: 16,
-//   created_at: 1511354163389,
-// }]
-
-//NEEDS 
-//A comment ID INTEGER, 
-//topic references topics.slug, 
-//author references users.username
-//article_id references articles.article_id

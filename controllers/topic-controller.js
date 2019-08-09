@@ -4,7 +4,6 @@ const {
 
 exports.getAllTopics = (req, res, next) => {
   selectAllTopics().then(topics => {
-    //console.log(topics, '<--- topics')
     res.status(200).send({
       topics
     }).catch(err => next(err))

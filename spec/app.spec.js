@@ -23,7 +23,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            //console.log(body, "<-- body")
             expect(body).to.be.an('object')
             expect(body.topics).to.be.an('array')
             expect(body.topics[0]).to.have.keys('slug', 'description')
@@ -51,7 +50,6 @@ describe('app', () => {
       });
     });
 
-
     describe('/users', () => {
       it('GET / returns status 200 & returns array containing specific user object', () => {
         return request(app)
@@ -60,10 +58,8 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            //console.log(body.user, '<-- body')
             expect(body).to.be.an('object')
             expect(body.user).to.be.an('object')
-            //should no longer be a array if just one object body.user should be a object with the keys username, url etc
             expect(body.user).to.have.keys('username', 'avatar_url', 'name')
             expect(body.user).to.eql({
               username: 'butter_bridge',
@@ -93,7 +89,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            // console.log(body)
             expect(body).to.be.an('object')
             expect(body.article).to.be.an('object')
             expect(body.article).to.have.keys('article_id', 'title', 'body', 'votes', 'topic', 'author', 'created_at', 'comment_count')
@@ -119,8 +114,6 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
-
-
       it('PATCH / returns status 200 and returns updated article object when passed positive number', () => {
         return request(app)
           .patch('/api/articles/1')
@@ -131,7 +124,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            //console.log(body, "<--- body")
             expect(body.article).to.eql({
               article_id: 1,
               title: 'Living in the shadow of a great man',
@@ -153,7 +145,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            //console.log(body, "<--- body")
             expect(body.article).to.eql({
               article_id: 1,
               title: 'Living in the shadow of a great man',
@@ -225,7 +216,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            //console.log(body, "<--- body")
             expect(body.article).to.eql({
               article_id: 1,
               title: 'Living in the shadow of a great man',
@@ -237,8 +227,6 @@ describe('app', () => {
             })
           })
       });
-
-
       it('POST / returns status 201 and new comment added to article', () => {
         return request(app)
           .post('/api/articles/5/comments')
@@ -250,7 +238,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            // console.log(body)
             expect(body.comment).to.have.keys("comment_id", "author", "article_id", "votes", "created_at", "body")
             expect(body.comment.comment_id).to.eql(19)
             expect(body.comment.author).to.eql("butter_bridge")
@@ -341,8 +328,6 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
-
-
       it('GET / responds with status 200 and an array of comments for the given `article_id` of which each comment should have the correct properties', () => {
         return request(app)
           .get('/api/articles/5/comments')
@@ -456,7 +441,6 @@ describe('app', () => {
             expect(body.msg).to.eql('Bad Request')
           })
       });
-
       it('GET / returns status 200 and returns array of article objects', () => {
         return request(app)
           .get('/api/articles')
@@ -464,7 +448,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            // console.log(body.articles[3])
             expect(body).to.be.an('object')
             expect(body.articles).to.be.an('array')
             expect(body.articles[3]).to.have.keys('author', 'body', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count')
@@ -487,7 +470,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            //console.log(body.articles)
             expect(body.articles).to.be.sortedBy('created_at', {
               descending: true
             })
@@ -673,7 +655,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            //console.log(body.comment, '<----')
             expect(body.comment).to.be.an('object')
             expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
             expect(body.comment.votes).to.eql(26)
@@ -694,7 +675,6 @@ describe('app', () => {
             expect(body.comment.votes).to.eql(-14)
           })
       });
-      //changed these below- might break HAHA
       it('PATCH /:comment_id returns status 404 Page Not Found when passed a not existing comment_id', () => {
         return request(app)
           .patch('/api/comments/393993')
@@ -781,7 +761,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            //console.log(body.comment, "<-- body.comment in test")
             expect(body.comment).to.be.an('object')
             expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
             expect(body.comment.votes).to.eql(26)
@@ -810,6 +789,18 @@ describe('app', () => {
             body
           }) => {
             expect(body.msg).to.eql('Page Not Found')
+          })
+      });
+    });
+    xdescribe('/', () => {
+      it('GET / returns status 200 and JSON object describing all the available endpoints on your API', () => {
+        return request(app)
+          .get('/api')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            expect(body.endpoints).to.eql({})
           })
       });
     });

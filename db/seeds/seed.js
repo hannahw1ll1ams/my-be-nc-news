@@ -25,7 +25,6 @@ exports.seed = function (knex) {
           const reformattedList = formatDates(articleData);
           //console.log(reformattedList, '<-- reformatted list');
           return knex.insert(reformattedList).into('articles').returning("*")
-
         })
         .then(articleRows => {
           //console.log(articleRows, "<--- article rows")

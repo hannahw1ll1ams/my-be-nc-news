@@ -1,10 +1,8 @@
 exports.formatDates = list => {
   if (list.length === 0) return [];
-
   let newDates = list.map(comment => {
     let currentTime = comment.created_at;
     let newDate = new Date(currentTime);
-    //console.log(newDate)
     let {
       created_at,
       ...restofComment
@@ -29,11 +27,8 @@ exports.makeRefObj = list => {
 };
 
 
-
 exports.formatComments = (comments, articleRef) => {
   if (comments.length === 0) return [];
-
-
   let formattedComments = comments.map(comment => {
     let {
       created_by,
@@ -42,8 +37,6 @@ exports.formatComments = (comments, articleRef) => {
       ...restOfComment
     } = comment;
     let currentTime = comment.created_at;
-
-
     return {
       ...restOfComment,
       author: comment.created_by,
@@ -52,5 +45,4 @@ exports.formatComments = (comments, articleRef) => {
     }
   })
   return formattedComments;
-
 };

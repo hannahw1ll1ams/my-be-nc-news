@@ -13,7 +13,6 @@ commentRouter
   .route('/')
   .all(methodNotAllowed)
 
-
 commentRouter
   .route('/:comment_id')
   .patch(updateCommentById)

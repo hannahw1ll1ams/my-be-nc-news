@@ -7,9 +7,6 @@ const {
   methodNotAllowed
 } = require('../errors/index')
 
-
-//console.log('topics router')
-
 topicRouter
   .route('/')
   .get(getAllTopics)
@@ -18,8 +15,5 @@ topicRouter
 topicRouter
   .route('/:username')
   .all(methodNotAllowed);
-
-
-
 
 module.exports = topicRouter;
