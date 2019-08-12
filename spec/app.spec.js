@@ -35,7 +35,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Page Not Found')
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
       it('GET / returns status 404 responds an error message > Page Not Found', () => {
@@ -45,7 +45,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Page Not Found')
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
     });
@@ -75,7 +75,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Page Not Found')
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
     });
@@ -101,7 +101,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Page Not Found')
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
       it('GET / returns status 400 for invalid article_id, returns message of Bad Request', () => {
@@ -111,7 +111,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('PATCH / returns status 200 and returns updated article object when passed positive number', () => {
@@ -156,14 +156,22 @@ describe('app', () => {
             })
           })
       });
-      it('PATCH / return status 400 and message of bad request if no update on request body', () => {
+      it('PATCH / return status 200 and the unchanged article object if no update on request body', () => {
         return request(app)
           .patch('/api/articles/1')
-          .expect(400)
+          .expect(200)
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.article).to.eql({
+              article_id: 1,
+              title: 'Living in the shadow of a great man',
+              topic: 'mitch',
+              author: 'butter_bridge',
+              body: 'I find this existence challenging',
+              created_at: "2018-11-15T12:21:54.171Z",
+              votes: 100
+            })
           })
       });
       it('PATCH / return status 400 and message of bad request if article id is invalid', () => {
@@ -176,7 +184,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('PATCH / return status 404 and message of Page Not Found if article id is not existing', () => {
@@ -189,7 +197,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Page Not Found')
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
       it('PATCH / return status 400 and message of bad request if wrong type of data provided in request', () => {
@@ -202,7 +210,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('PATCH / return status 200 and and returns updated votes key on article object when given multiple pieces of information on request body', () => {
@@ -239,11 +247,11 @@ describe('app', () => {
             body
           }) => {
             expect(body.comment).to.have.keys("comment_id", "author", "article_id", "votes", "created_at", "body")
-            expect(body.comment.comment_id).to.eql(19)
-            expect(body.comment.author).to.eql("butter_bridge")
-            expect(body.comment.article_id).to.eql(5)
-            expect(body.comment.votes).to.eql(0)
-            expect(body.comment.body).to.eql("It is what it is...")
+            expect(body.comment.comment_id).to.equal(19)
+            expect(body.comment.author).to.equal("butter_bridge")
+            expect(body.comment.article_id).to.equal(5)
+            expect(body.comment.votes).to.equal(0)
+            expect(body.comment.body).to.equal("It is what it is...")
           })
       });
       it('POST / return status 404 Page Not Found for not existing article id', () => {
@@ -257,7 +265,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql("Page Not Found")
+            expect(body.msg).to.equal("Page Not Found")
           })
       });
       it('POST / return status 404 Page Not Found for valid article_id but wrong path typed', () => {
@@ -271,7 +279,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql("Page Not Found")
+            expect(body.msg).to.equal("Page Not Found")
           })
       });
       it('POST / return status 400 Bad Request for missed required body field', () => {
@@ -284,7 +292,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('POST / return status 400 Bad Request for missed required username field', () => {
@@ -297,7 +305,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('POST / return status 400 Bad Request for schema violations', () => {
@@ -311,7 +319,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('POST / return status 400 Bad Request for wrong keys inputted', () => {
@@ -325,7 +333,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('GET / responds with status 200 and an array of comments for the given `article_id` of which each comment should have the correct properties', () => {
@@ -337,10 +345,10 @@ describe('app', () => {
           }) => {
             expect(body.comments).to.be.an('array')
             expect(body.comments[0]).to.have.keys('comment_id', 'author', 'votes', 'created_at', 'body')
-            expect(body.comments[0].comment_id).to.eql(14)
-            expect(body.comments[0].author).to.eql('icellusedkars')
-            expect(body.comments[0].votes).to.eql(16)
-            expect(body.comments[0].body).to.eql('What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.')
+            expect(body.comments[0].comment_id).to.equal(14)
+            expect(body.comments[0].author).to.equal('icellusedkars')
+            expect(body.comments[0].votes).to.equal(16)
+            expect(body.comments[0].body).to.equal('What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.')
           })
       })
       it('GET/:article_id/comments default returns the comments sorted by created_at and descending in order from new to old', () => {
@@ -350,11 +358,25 @@ describe('app', () => {
           .then(({
             body
           }) => {
+            console.log(body)
             expect(body.comments).to.be.sortedBy('created_at', {
               descending: true
             })
           })
       });
+      it('GET/:article_id/comments serves an empty array when article exists but has no comments', () => {
+        return request(app)
+          .get('/api/articles/3/comments')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            console.log(body)
+            expect(body.comments).to.be.an('array')
+            expect(body.comments).to.eql([])
+          })
+      });
+      // ABOVE - tricky because if there are no comments i.e. array length is 0 we want the empty array. But also if the article id doesn't exist, the comments.length would also be 0 and we want a Page not found error
       it('GET/:article_id/comments returns the comments sorted by any specified column default descending', () => {
         return request(app)
           .get('/api/articles/5/comments?sort_by=author')
@@ -374,7 +396,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            console.log(body, "<---- body in test")
             expect(body.comments).to.be.sortedBy('created_at', {
               ascending: true
             })
@@ -399,7 +420,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql("Bad Request")
+            expect(body.msg).to.equal("Bad Request")
           })
       });
       it('GET /returns status 404 Page Not Found for a not found article_id', () => {
@@ -409,9 +430,10 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql("Page Not Found")
+            expect(body.msg).to.equal("Page Not Found")
           })
       });
+      //ABOVE had tested for this if comment length = 0
       it('GET / returns status 400 Bad Request for a query request to be sorted by a column that does not exist', () => {
         return request(app)
           .get('/api/articles/5/comments?sort_by=fruit')
@@ -419,7 +441,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('GET / returns status 400 Bad Request for a query request to be ordered by a invalid order', () => {
@@ -429,7 +451,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('GET / returns status 400 Bad Request for a bad query request', () => {
@@ -439,7 +461,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('GET / returns status 200 and returns array of article objects', () => {
@@ -452,13 +474,13 @@ describe('app', () => {
             expect(body).to.be.an('object')
             expect(body.articles).to.be.an('array')
             expect(body.articles[3]).to.have.keys('author', 'body', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count')
-            expect(body.articles[3].author).to.eql('rogersop')
-            expect(body.articles[3].body).to.eql('We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages')
-            expect(body.articles[3].title).to.eql('Student SUES Mitch!')
-            expect(body.articles[3].article_id).to.eql(4)
-            expect(body.articles[3].topic).to.eql('mitch')
-            expect(body.articles[3].votes).to.eql(0)
-            expect(body.articles[3].comment_count).to.eql('0')
+            expect(body.articles[3].author).to.equal('rogersop')
+            expect(body.articles[3].body).to.equal('We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages')
+            expect(body.articles[3].title).to.equal('Student SUES Mitch!')
+            expect(body.articles[3].article_id).to.equal(4)
+            expect(body.articles[3].topic).to.equal('mitch')
+            expect(body.articles[3].votes).to.equal(0)
+            expect(body.articles[3].comment_count).to.equal('0')
           })
       });
       it('GET / returns status 200 and sorts articles by default-date  when not specified', () => {
@@ -504,8 +526,8 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.articles[0].author).to.eql('icellusedkars')
-            expect(body.articles.length).to.eql(6)
+            expect(body.articles[0].author).to.equal('icellusedkars')
+            expect(body.articles.length).to.equal(6)
             expect(body.articles.every(article => article.author === 'icellusedkars')).to.be.true;
           })
       });
@@ -516,7 +538,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.articles[0].topic).to.eql('cats')
+            expect(body.articles[0].topic).to.equal('cats')
           })
       });
       it('GET/ status 400 Bad Request when passed a sortby query by invalid column', () => {
@@ -526,7 +548,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('GET/ status 400 Bad Request when passed a author query which does not exist', () => {
@@ -536,7 +558,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('GET/ status 400 Bad Request when passed a topic query which does not exist', () => {
@@ -546,7 +568,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('GET / status 400 Bad Request when passed a invalid order query', () => {
@@ -556,7 +578,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('GET / status 200 success when passed a query that is not defined returns all of articles', () => {
@@ -566,7 +588,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.articles.length).to.eql(12)
+            expect(body.articles.length).to.equal(12)
           })
       });
       it('GET / status 200 ignoring invalid queries and serves back array of article objects sorted and ordered by defaults', () => {
@@ -588,7 +610,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Method Not Allowed')
+            expect(body.msg).to.equal('Method Not Allowed')
           })
       });
       it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on articles path', () => {
@@ -598,7 +620,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Method Not Allowed')
+            expect(body.msg).to.equal('Method Not Allowed')
           })
       });
       it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on users path', () => {
@@ -608,7 +630,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Method Not Allowed')
+            expect(body.msg).to.equal('Method Not Allowed')
           })
       });
       it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on users path', () => {
@@ -618,7 +640,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Method Not Allowed')
+            expect(body.msg).to.equal('Method Not Allowed')
           })
       });
       it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on topics path', () => {
@@ -628,7 +650,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Method Not Allowed')
+            expect(body.msg).to.equal('Method Not Allowed')
           })
       });
       it('GET / status 405 Method Not Allowed when passed a method that cannot be implemented on topics path', () => {
@@ -638,7 +660,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Method Not Allowed')
+            expect(body.msg).to.equal('Method Not Allowed')
           })
       });
     });
@@ -657,7 +679,7 @@ describe('app', () => {
           }) => {
             expect(body.comment).to.be.an('object')
             expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
-            expect(body.comment.votes).to.eql(26)
+            expect(body.comment.votes).to.equal(26)
           })
       });
       it('PATCH /:comment_id returns status 200 and updated votes count when passed a negative number', () => {
@@ -672,7 +694,7 @@ describe('app', () => {
           }) => {
             expect(body.comment).to.be.an('object')
             expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
-            expect(body.comment.votes).to.eql(-14)
+            expect(body.comment.votes).to.equal(-14)
           })
       });
       it('PATCH /:comment_id returns status 404 Page Not Found when passed a not existing comment_id', () => {
@@ -685,7 +707,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Page Not Found')
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
       it('PATCH /:comment_id returns status 400 Bad Request when passed a not valid comment_id', () => {
@@ -698,7 +720,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('PATCH / comments return status 405 Method Not Allowed when passed a method with a invalid path', () => {
@@ -711,7 +733,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Method Not Allowed')
+            expect(body.msg).to.equal('Method Not Allowed')
           })
       });
       it('POST / comments/ :comment_id return status 405 when passed a invalid path to http method', () => {
@@ -724,17 +746,19 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Method Not Allowed')
+            expect(body.msg).to.equal('Method Not Allowed')
           })
       });
-      it('PATCH / :comment_id returns status 400 Bad Request if no upate on request body', () => {
+      it('PATCH / :comment_id returns status 200 if no update on request body and returns the unchanged comment object', () => {
         return request(app)
-          .patch('/api/comments/2')
-          .expect(400)
+          .patch('/api/comments/1')
+          .expect(200)
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.comment).to.be.an('object')
+            expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
+            expect(body.comment.votes).to.equal(16)
           })
       });
       it('PATCH /: comment_id returns status 400 Bad Request if wrong type of data provided in request', () => {
@@ -747,7 +771,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('PATCH /: comment_id returns status 201 and updated votes key on article object when given multiple pieces of information on request body', () => {
@@ -763,7 +787,7 @@ describe('app', () => {
           }) => {
             expect(body.comment).to.be.an('object')
             expect(body.comment).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body')
-            expect(body.comment.votes).to.eql(26)
+            expect(body.comment.votes).to.equal(26)
           })
       });
       it('DELETE / returns status 204 and no content', () => {
@@ -778,7 +802,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Bad Request')
+            expect(body.msg).to.equal('Bad Request')
           })
       });
       it('DELETE / returns status 404 Page Not Found if not existing comment_id', () => {
@@ -788,10 +812,11 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.eql('Page Not Found')
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
     });
+
     xdescribe('/', () => {
       it('GET / returns status 200 and JSON object describing all the available endpoints on your API', () => {
         return request(app)

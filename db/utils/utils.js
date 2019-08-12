@@ -1,20 +1,34 @@
 exports.formatDates = list => {
   if (list.length === 0) return [];
   let newDates = list.map(comment => {
-    let currentTime = comment.created_at;
-    let newDate = new Date(currentTime);
     let {
       created_at,
       ...restofComment
     } = comment;
     return {
       ...restofComment,
-      created_at: newDate
+      created_at: new Date(comment.created_at)
     };
   })
   return newDates;
 };
 
+// exports.formatDates = list => {
+//   if (list.length === 0) return [];
+//   let newDates = list.map(comment => {
+//     let currentTime = comment.created_at;
+//     let newDate = new Date(currentTime);
+//     let {
+//       created_at,
+//       ...restofComment
+//     } = comment;
+//     return {
+//       ...restofComment,
+//       created_at: newDate
+//     };
+//   })
+//   return newDates;
+// };
 
 exports.makeRefObj = list => {
   if (list.length === 0) return {};

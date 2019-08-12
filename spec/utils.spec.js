@@ -12,23 +12,23 @@ describe('formatDates', () => {
     expect(formatDates([])).to.not.equal([]);
   });
   it('passed a array with one object, convert its timestamp into a javascript date object, leaving everything else untouched', () => {
-    let input = [{
+    const input = [{
       created_at: 1511354163389,
     }];
-    let actual = formatDates(input);
-    let expected = [{
+    const actual = formatDates(input);
+    const expected = [{
       created_at: new Date(1511354163389)
     }];
     expect(actual).to.eql(expected);
   });
   it('passed a array with multiple objects, convert all timestamps into a javascript date object, leaving everything else untouched', () => {
-    let input = [{
+    const input = [{
       created_at: 1511354163389,
     }, {
       created_at: 1448282163389,
     }];
-    let actual = formatDates(input);
-    let expected = [{
+    const actual = formatDates(input);
+    const expected = [{
       created_at: new Date(1511354163389)
     }, {
       created_at: new Date(1448282163389)
@@ -36,7 +36,7 @@ describe('formatDates', () => {
     expect(actual).to.eql(expected);
   });
   it("do not mutate the input data", () => {
-    let input = [{
+    const input = [{
       title: 'Living in the shadow of a great man',
       topic: 'mitch',
       author: 'butter_bridge',
@@ -55,7 +55,7 @@ describe('formatDates', () => {
     }]);
   });
   it('passed a array with multiple objects, check all other values untouched ', () => {
-    let input = [{
+    const input = [{
         title: 'Eight pug gifs that remind me of mitch',
         topic: 'mitch',
         author: 'icellusedkars',
@@ -70,8 +70,8 @@ describe('formatDates', () => {
         created_at: 1163852514171,
       }
     ];
-    let actual = formatDates(input);
-    let expected = [{
+    const actual = formatDates(input);
+    const expected = [{
         title: 'Eight pug gifs that remind me of mitch',
         topic: 'mitch',
         author: 'icellusedkars',
@@ -92,13 +92,13 @@ describe('formatDates', () => {
 
 describe('makeRefObj', () => {
   it('takes a empty array, returns a empty object', () => {
-    let input = [];
-    let actual = makeRefObj(input);
-    let expected = {};
+    const input = [];
+    const actual = makeRefObj(input);
+    const expected = {};
     expect(actual).to.eql(expected);
   });
   it('if passed one article object in array, turns into object lookup with title to key value integer', () => {
-    let input = [{
+    const input = [{
       article_id: 1,
       title: 'Living in the shadow of a great man',
       topic: 'mitch',
@@ -107,14 +107,14 @@ describe('makeRefObj', () => {
       created_at: 1542284514171,
       votes: 100,
     }];
-    let actual = makeRefObj(input);
-    let expected = {
+    const actual = makeRefObj(input);
+    const expected = {
       'Living in the shadow of a great man': 1
     }
     expect(actual).to.eql(expected);
   });
   it('if passed multiple article objects in array, turn into object lookup with all title to key value integers', () => {
-    let input = [{
+    const input = [{
       article_id: 1,
       title: 'Living in the shadow of a great man',
       topic: 'mitch',
@@ -130,15 +130,15 @@ describe('makeRefObj', () => {
       body: 'some gifs',
       created_at: 1289996514171,
     }];
-    let actual = makeRefObj(input);
-    let expected = {
+    const actual = makeRefObj(input);
+    const expected = {
       'Living in the shadow of a great man': 1,
       'Eight pug gifs that remind me of mitch': 2
     }
     expect(actual).to.eql(expected);
   });
   it("do not mutate the input data", () => {
-    let input = [{
+    const input = [{
       title: 'Living in the shadow of a great man',
       topic: 'mitch',
       author: 'butter_bridge',
@@ -163,37 +163,37 @@ describe('formatComments', () => {
     expect(formatComments([])).to.eql([]);
   });
   it('passes a single comment object in array, retitles created_by property to author', () => {
-    let commentInput = [{
+    const commentInput = [{
       created_by: 'icellusedkars'
     }]
     expect(formatComments(commentInput, {})[0].author).to.eql('icellusedkars')
   });
   xit('passes a single comment object in array, retitles belongs_to property to article_id', () => {
-    let commentInput = [{
+    const commentInput = [{
       belongs_to: 'Living in the shadow of a great man'
     }]
-    let test = formatComments(commentInput, {})
+    const test = formatComments(commentInput, {})
     expect(test[0].belongs_to).to.have.keys("article_id")
   });
   //how to text this one^^^
 
   it('passes a single comment object in array, belongs to is changed to article_id and is set equal to value in the refObject passed', () => {
-    let commentInput = [{
+    const commentInput = [{
       belongs_to: 'Living in the shadow of a great man'
     }];
-    let articleRef = {
+    const articleRef = {
       'Living in the shadow of a great man': 1
     }
     expect(formatComments(commentInput, articleRef)[0].article_id).to.eql(1);
   });
   it('passes a single comment object in array, created at timestamp value converted into a javascript date object', () => {
-    let commentInput = [{
+    const commentInput = [{
       created_at: 1385210163389
     }];
     expect(formatComments(commentInput, {})[0].created_at).to.eql(new Date(1385210163389));
   });
   it('does not mutate original input', () => {
-    let input = [{
+    const input = [{
       comment_id: 1,
       body: 'I hate streaming noses',
       created_by: 'icellusedkars',
@@ -210,7 +210,7 @@ describe('formatComments', () => {
     }])
   });
   it('passed one comment object in array, has every property needed', () => {
-    let input = [{
+    const input = [{
       comment_id: 1,
       body: ' I carry a log — yes. Is it funny to you? It is not to me.',
       belongs_to: 'Living in the shadow of a great man',
@@ -218,13 +218,13 @@ describe('formatComments', () => {
       votes: -100,
       created_at: 1416746163389,
     }];
-    let refObject = {
+    const refObject = {
       'Living in the shadow of a great man': 1
     }
     expect(formatComments(input, refObject)[0]).to.have.keys('comment_id', 'author', 'article_id', 'votes', 'created_at', 'body');
   });
   it('passed multiple objects, updates to each objects keys', () => {
-    let input = [{
+    const input = [{
         comment_id: 3,
         body: 'This is a bad article name',
         belongs_to: 'UNCOVERED: catspiracy to bring down democracy',
@@ -241,7 +241,7 @@ describe('formatComments', () => {
         created_at: 1006778163389,
       }
     ];
-    let articleRef = {
+    const articleRef = {
       'UNCOVERED: catspiracy to bring down democracy': 1,
       "They're not exactly dogs, are they?": 2
     }

@@ -20,15 +20,9 @@ exports.selectArticleAndUpdate = ({
 }, {
   article_id
 }) => {
-  if (!inc_votes) {
-    return Promise.reject({
-      status: 400,
-      msg: 'Bad Request'
-    })
-  }
   return connection('articles')
     .where('article_id', '=', article_id)
-    .increment("votes", inc_votes).returning('*')
+    .increment("votes", inc_votes || 0).returning('*')
     .then(updatedArticle => {
       if (updatedArticle.length === 0) {
         return Promise.reject({
@@ -79,6 +73,10 @@ exports.selectCommentsByArticleId = ({
     })
   }
   return connection.select('comment_id', 'author', 'votes', 'created_at', 'body').from('comments').where('comments.article_id', '=', article_id).orderBy(sort_by, order).then(comments => {
+    console.log(comments)
+    //if article exists with articles id AND has comment count === 0, return []
+    //else if article doesn't exist get page not found
+    //else return comments
     if (comments.length === 0) {
       return Promise.reject({
         status: 404,

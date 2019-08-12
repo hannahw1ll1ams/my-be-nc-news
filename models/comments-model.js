@@ -6,15 +6,10 @@ exports.selectCommentByIdAndUpdate = ({
   inc_votes
 }) => {
 
-  if (!inc_votes) {
-    return Promise.reject({
-      status: 400,
-      msg: 'Bad Request'
-    })
-  }
+
   return connection('comments')
     .where('comments.comment_id', '=', comment_id)
-    .increment("votes", inc_votes)
+    .increment("votes", inc_votes || 0)
     .returning('*')
     .then(comments => {
       if (comments.length === 0) {
