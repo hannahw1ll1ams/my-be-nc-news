@@ -364,19 +364,6 @@ describe('app', () => {
             })
           })
       });
-      it('GET/:article_id/comments serves an empty array when article exists but has no comments', () => {
-        return request(app)
-          .get('/api/articles/3/comments')
-          .expect(200)
-          .then(({
-            body
-          }) => {
-            console.log(body)
-            expect(body.comments).to.be.an('array')
-            expect(body.comments).to.eql([])
-          })
-      });
-      // ABOVE - tricky because if there are no comments i.e. array length is 0 we want the empty array. But also if the article id doesn't exist, the comments.length would also be 0 and we want a Page not found error
       it('GET/:article_id/comments returns the comments sorted by any specified column default descending', () => {
         return request(app)
           .get('/api/articles/5/comments?sort_by=author')
@@ -423,7 +410,7 @@ describe('app', () => {
             expect(body.msg).to.equal("Bad Request")
           })
       });
-      it('GET /returns status 404 Page Not Found for a not found article_id', () => {
+      it.only('GET /returns status 404 Page Not Found for a not found article_id', () => {
         return request(app)
           .get('/api/articles/1909248/comments?sort_by=author')
           .expect(404)
@@ -434,6 +421,19 @@ describe('app', () => {
           })
       });
       //ABOVE had tested for this if comment length = 0
+      it.only('GET/:article_id/comments serves an empty array when article exists but has no comments', () => {
+        return request(app)
+          .get('/api/articles/3/comments')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            console.log(body)
+            expect(body.comments).to.be.an('array')
+            expect(body.comments).to.eql([])
+          })
+      });
+      // ABOVE - tricky because if there are no comments i.e. array length is 0 we want the empty array. But also if the article id doesn't exist, the comments.length would also be 0 and we want a Page not found error
       it('GET / returns status 400 Bad Request for a query request to be sorted by a column that does not exist', () => {
         return request(app)
           .get('/api/articles/5/comments?sort_by=fruit')
