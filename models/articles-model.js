@@ -60,42 +60,7 @@ exports.addCommentToArticle = ({
 
 
 
-exports.selectCommentsByArticleId = ({
-  article_id
-}, {
-  sort_by = "comments.created_at",
-  order = 'desc'
-}) => {
-  if ((order !== 'asc') && (order !== 'desc')) {
-    return Promise.reject({
-      status: 400,
-      msg: 'Bad Request'
-    })
-  }
-  return connection.select('comment_id', 'author', 'votes', 'created_at', 'body').from('comments').where('comments.article_id', '=', article_id).orderBy(sort_by, order)
-  .then(comments => {
-    console.log(article_id)
-    console.log(comments)
-    //if article exists with articles id AND has comment count === 0, return []
-    //else if article doesn't exist get page not found
-    //else return comments
-    return Promise.all([comments, selectArticle(article_id)])
-      .then(comments => console.log(comments, "<---"))
-    if (comments.length === 0) {
-      return Promise.reject({
-        status: 404,
-        msg: 'Page Not Found'
-      })
-    } else return comments
-  })
-}
 
-/*
-if comments doesn't exist its because article id hasn't found any?
-promise.all([comments, selectArticle(article_id)])
-.then(comments => return comments)
-
-Original:
 exports.selectCommentsByArticleId = ({
   article_id
 }, {
@@ -109,22 +74,25 @@ exports.selectCommentsByArticleId = ({
     })
   }
   return connection.select('comment_id', 'author', 'votes', 'created_at', 'body').from('comments').where('comments.article_id', '=', article_id).orderBy(sort_by, order).then(comments => {
-    console.log(!comments)
-    console.log(comments)
-    //if article exists with articles id AND has comment count === 0, return []
-    //else if article doesn't exist get page not found
-    //else return comments
-    if (comments.length === 0) {
-      return Promise.reject({
-        status: 404,
-        msg: 'Page Not Found'
-      })
-    } else return comments
-  })
+    return Promise.all([comments, this.selectArticle(article_id)])
+  }).then(response => console.log(response, '<---'))
+  // console.log(comments)
+  // if (comments.length === 0) {
+  //   return Promise.reject({
+  //     status: 404,
+  //     msg: 'Page Not Found'
+  //   })
+  // } else return comments
 }
 
-*/
+// doesItExist = () => {
 
+// }
+
+//create a reusable function, testing whether article, user or topic exists.
+//If does exist return true, if doesn't exist return false.
+//selectCommentsByArticleId, if outcome of function is true, return empty array.
+//If outcome is false return error.
 
 
 
