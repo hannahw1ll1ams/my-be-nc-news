@@ -12,8 +12,8 @@ const request = require("supertest");
 const connection = require("../db/connection");
 
 describe('app', () => {
-  after(() => connection.destroy());
   beforeEach(() => connection.seed.run());
+  after(() => connection.destroy());
   describe('/api', () => {
     describe('/topics', () => {
       it('GET / returns status 200 & returns array of all topic objects with correct keys', () => {
@@ -410,7 +410,7 @@ describe('app', () => {
             expect(body.msg).to.equal("Bad Request")
           })
       });
-      it.only('GET /returns status 404 Page Not Found for a not found article_id', () => {
+      it('GET /returns status 404 Page Not Found for a not found article_id', () => {
         return request(app)
           .get('/api/articles/1909248/comments?sort_by=author')
           .expect(404)
@@ -421,7 +421,7 @@ describe('app', () => {
           })
       });
       //ABOVE had tested for this if comment length = 0
-      it.only('GET/:article_id/comments serves an empty array when article exists but has no comments', () => {
+      it('GET/:article_id/comments serves an empty array when article exists but has no comments', () => {
         return request(app)
           .get('/api/articles/3/comments')
           .expect(200)

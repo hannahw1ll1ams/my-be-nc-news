@@ -74,25 +74,10 @@ exports.selectCommentsByArticleId = ({
     })
   }
   return connection.select('comment_id', 'author', 'votes', 'created_at', 'body').from('comments').where('comments.article_id', '=', article_id).orderBy(sort_by, order).then(comments => {
-    return Promise.all([comments, this.selectArticle(article_id)])
-  }).then(response => console.log(response, '<---'))
-  // console.log(comments)
-  // if (comments.length === 0) {
-  //   return Promise.reject({
-  //     status: 404,
-  //     msg: 'Page Not Found'
-  //   })
-  // } else return comments
+    return Promise.all([comments, exports.selectArticle({ article_id })])
+  })
+  .then(([comments]) => comments)
 }
-
-// doesItExist = () => {
-
-// }
-
-//create a reusable function, testing whether article, user or topic exists.
-//If does exist return true, if doesn't exist return false.
-//selectCommentsByArticleId, if outcome of function is true, return empty array.
-//If outcome is false return error.
 
 
 
