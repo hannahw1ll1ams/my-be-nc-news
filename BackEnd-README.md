@@ -4,7 +4,7 @@
 
 This API was built to be used in the Northcoders News Sprint during the Front End block of the course. Its database is PSQL and can be interacted with using [Knex](https://knexjs.org). It has a series of endpoints built to recover combination of topics, articles, users and comments.
 
-## Step 1 - Set up what 
+## Step 1 - Install dependencies
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
