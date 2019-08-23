@@ -817,7 +817,7 @@ describe('app', () => {
       });
     });
 
-    xdescribe('/', () => {
+    describe('/', () => {
       it('GET / returns status 200 and JSON object describing all the available endpoints on your API', () => {
         return request(app)
           .get('/api')

@@ -11,11 +11,3 @@ const connection = knex(dbConfig);
 
 
 module.exports = connection;
-
-
-
-
-// const dbConfig = require('../knexfile');
-// const connection = require('knex')(dbConfig);
-
-// module.exports = connection;
