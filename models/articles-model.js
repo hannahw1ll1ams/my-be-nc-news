@@ -76,7 +76,7 @@ exports.selectCommentsByArticleId = ({
   return connection.select('comment_id', 'author', 'votes', 'created_at', 'body').from('comments').where('comments.article_id', '=', article_id).orderBy(sort_by, order).then(comments => {
     return Promise.all([comments, exports.selectArticle({ article_id })])
   })
-  .then(([comments]) => comments)
+    .then(([comments]) => comments)
 }
 
 
@@ -109,8 +109,8 @@ exports.getAllArticles = ({
     .then(articles => {
       if (articles.length === 0) {
         return Promise.reject({
-          status: 400,
-          msg: 'Bad Request'
+          status: 404,
+          msg: 'Page Not Found'
         })
       } else return articles
     })

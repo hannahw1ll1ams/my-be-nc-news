@@ -554,7 +554,7 @@ describe('app', () => {
       it('GET/ status 404 Page Not Found when passed a author query which does not exist', () => {
         return request(app)
           .get('/api/articles?author=chorizocroquettes')
-          .expect(400)
+          .expect(404)
           .then(({
             body
           }) => {
