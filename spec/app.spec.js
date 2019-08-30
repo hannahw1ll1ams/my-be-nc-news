@@ -551,24 +551,24 @@ describe('app', () => {
             expect(body.msg).to.equal('Bad Request')
           })
       });
-      it('GET/ status 400 Bad Request when passed a author query which does not exist', () => {
+      it('GET/ status 404 Page Not Found when passed a author query which does not exist', () => {
         return request(app)
           .get('/api/articles?author=chorizocroquettes')
           .expect(400)
           .then(({
             body
           }) => {
-            expect(body.msg).to.equal('Bad Request')
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
-      it('GET/ status 400 Bad Request when passed a topic query which does not exist', () => {
+      it('GET/ status 404 Page Not Found when passed a topic query which does not exist', () => {
         return request(app)
           .get('/api/articles?topic=2345')
-          .expect(400)
+          .expect(404)
           .then(({
             body
           }) => {
-            expect(body.msg).to.equal('Bad Request')
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
       it('GET / status 400 Bad Request when passed a invalid order query', () => {
