@@ -397,5 +397,6 @@ DELETE /api/articles/:article_id
 POST /api/topics
 
 POST /api/users
+
 GET /api/users
 ```

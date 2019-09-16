@@ -1,6 +1,7 @@
 const topicRouter = require('express').Router()
 const {
-  getAllTopics
+  getAllTopics,
+  postNewTopic
 } = require('../controllers/topic-controller')
 
 const {
@@ -10,6 +11,7 @@ const {
 topicRouter
   .route('/')
   .get(getAllTopics)
+  .post(postNewTopic)
   .all(methodNotAllowed);
 
 topicRouter

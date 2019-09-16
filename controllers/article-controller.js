@@ -3,7 +3,9 @@ const {
   selectArticleAndUpdate,
   addCommentToArticle,
   selectCommentsByArticleId,
-  getAllArticles
+  getAllArticles,
+  addArticle,
+  selectArticleAndRemove
 } = require('../models/articles-model')
 
 
@@ -36,7 +38,6 @@ exports.postArticleCommentByArticleId = (req, res, next) => {
     .catch(err => next(err))
 }
 
-////
 exports.getCommentsByArticleId = (req, res, next) => {
   selectCommentsByArticleId(req.params, req.query).then(comments => {
     res.status(200).send({
@@ -45,7 +46,6 @@ exports.getCommentsByArticleId = (req, res, next) => {
   })
     .catch(err => next(err))
 }
-/////
 
 exports.sendAllArticles = (req, res, next) => {
   getAllArticles(req.query).then(articles => {
@@ -54,4 +54,20 @@ exports.sendAllArticles = (req, res, next) => {
     })
   })
     .catch(err => next(err));
+}
+
+exports.postArticle = (req, res, next) => {
+  addArticle(req.body).then(([article]) => {
+    res.status(201).send({
+      article
+    })
+  })
+    .catch(err => next(err))
+}
+
+exports.removeSelectedArticleById = (req, res, next) => {
+  selectArticleAndRemove(req.params).then(response => {
+    res.sendStatus(204)
+  })
+    .catch(err => next(err))
 }

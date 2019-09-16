@@ -16,3 +16,14 @@ exports.selectUser = ({
       else return user;
     })
 }
+
+exports.addNewUser = ({ username, avatar_url, name }) => {
+  return connection.insert({ username, avatar_url, name })
+    .into('users')
+    .returning('*')
+}
+
+exports.fetchAllUsers = () => {
+  return connection.select('username', 'avatar_url', 'name')
+    .from('users')
+}

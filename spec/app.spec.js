@@ -48,6 +48,49 @@ describe('app', () => {
             expect(body.msg).to.equal('Page Not Found')
           })
       });
+      it('POST / returns status 201 and new topic added to topic list', () => {
+        return request(app)
+          .post('/api/topics')
+          .send({
+            slug: 'coding',
+            description: 'all things code'
+          })
+          .expect(201)
+          .then(({
+            body
+          }) => {
+            expect(body.topic).to.have.keys("slug", "description")
+            expect(body.topic.slug).to.equal("coding")
+            expect(body.topic.description).to.equal('all things code')
+          })
+      });
+      it('POST / return status 400 Bad Request for missed required body field', () => {
+        return request(app)
+          .post('/api/topics')
+          .send({
+            slug: 'knitting'
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Bad Request')
+          })
+      });
+      it('POST / return status 400 Bad Request for wrong keys inputted', () => {
+        return request(app)
+          .post('/api/articles/5/comments')
+          .send({
+            slug: 'butter_bridge',
+            votes: 56
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Bad Request')
+          })
+      });
     });
 
     describe('/users', () => {
@@ -76,6 +119,101 @@ describe('app', () => {
             body
           }) => {
             expect(body.msg).to.equal('Page Not Found')
+          })
+      });
+      it('POST / returns status 201 and new user added', () => {
+        return request(app)
+          .post('/api/users')
+          .send({
+            username: 'hannah_williams',
+            avatar_url: 'https://m.media-amazon.com/images/S/aplus-media/mg/dbf4301f-af40-46f2-9a87-a99deddcd9a2._SL300__.jpg',
+            name: 'happy'
+          })
+          .expect(201)
+          .then(({
+            body
+          }) => {
+            expect(body.user).to.have.keys("username", "avatar_url", "name")
+            expect(body.user.username).to.equal("hannah_williams")
+            expect(body.user.name).to.equal('happy')
+            expect(body.user.avatar_url).to.equal('https://m.media-amazon.com/images/S/aplus-media/mg/dbf4301f-af40-46f2-9a87-a99deddcd9a2._SL300__.jpg')
+          })
+      });
+      it('POST / return status 400 Bad Request for missed required body field', () => {
+        return request(app)
+          .post('/api/users')
+          .send({
+            username: 'hilarious_hannah',
+            name: 'happy'
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Bad Request')
+          })
+      });
+      it('POST / return status 400 Bad Request for wrong keys inputted', () => {
+        return request(app)
+          .post('/api/users')
+          .send({
+            username: 'hannah_williams',
+            picture: 'https://m.media-amazon.com/images/S/aplus-media/mg/dbf4301f-af40-46f2-9a87-a99deddcd9a2._SL300__.jpg',
+            description: 'happy'
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Bad Request')
+          })
+      });
+      it('POST / return status 400 Bad Request for schema violations', () => {
+        return request(app)
+          .post('/api/users')
+          .send({
+            username: 987129837,
+            picture: 'https://m.media-amazon.com/images/S/aplus-media/mg/dbf4301f-af40-46f2-9a87-a99deddcd9a2._SL300__.jpg',
+            description: 'happy'
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Bad Request')
+          })
+      });
+      // it.only('POST / return status 400 Bad Request when adding a username that already exists', () => {
+      //   return request(app)
+      //     .post('/api/users')
+      //     .send({
+      //       username: 'butter_bridge',
+      //       avatar_url: 'https://m.media-amazon.com/images/S/aplus-media/mg/dbf4301f-af40-46f2-9a87-a99deddcd9a2._SL300__.jpg',
+      //       name: 'jonny'
+      //     })
+      //     .expect(400)
+      //     .then(({
+      //       body
+      //     }) => {
+      //       expect(body.msg).to.equal('Bad Request')
+      //     })
+      // });
+      it('GET / returns status 200 & returns array containing specific user object', () => {
+        return request(app)
+          .get('/api/users')
+          .expect(200)
+          .then(({
+            body
+          }) => {
+            console.log(body)
+            expect(body).to.be.an('object')
+            expect(body.users).to.be.an('array')
+            expect(body.users[0]).to.have.keys('username', 'avatar_url', 'name')
+            expect(body.users[0]).to.eql({
+              username: 'butter_bridge',
+              avatar_url: 'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
+              name: 'jonny'
+            })
           })
       });
     });
@@ -420,7 +558,6 @@ describe('app', () => {
             expect(body.msg).to.equal("Page Not Found")
           })
       });
-      //ABOVE had tested for this if comment length = 0
       it('GET/:article_id/comments serves an empty array when article exists but has no comments', () => {
         return request(app)
           .get('/api/articles/3/comments')
@@ -433,7 +570,6 @@ describe('app', () => {
             expect(body.comments).to.eql([])
           })
       });
-      // ABOVE - tricky because if there are no comments i.e. array length is 0 we want the empty array. But also if the article id doesn't exist, the comments.length would also be 0 and we want a Page not found error
       it('GET / returns status 400 Bad Request for a query request to be sorted by a column that does not exist', () => {
         return request(app)
           .get('/api/articles/5/comments?sort_by=fruit')
@@ -661,6 +797,99 @@ describe('app', () => {
             body
           }) => {
             expect(body.msg).to.equal('Method Not Allowed')
+          })
+      });
+      ////////
+      it('POST / returns status 201 and new article with correct keys', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: "Passports and nationality: The Brits 'going Dutch' over Brexit",
+            topic: 'mitch',
+            username: 'butter_bridge',
+            body: "Would you sacrifice your nationality to secure the rights guaranteed to EU citizens? There's been a rapid rise in the number of British nationals living in the Netherlands applying to become Dutch since the UK voted in a referendum to leave the European Union. Before Brexit, barely anyone made the switch. In most cases, Dutch law requires people taking Dutch citizenship to renounce their previous nationality."
+          })
+          .expect(201)
+          .then(({
+            body
+          }) => {
+            expect(body.article).to.have.keys("article_id", "title", "topic", "author", "votes", "created_at", "body")
+            expect(body.article.article_id).to.equal(13)
+            expect(body.article.author).to.equal("butter_bridge")
+            expect(body.article.votes).to.equal(0)
+            expect(body.article.body).to.equal("Would you sacrifice your nationality to secure the rights guaranteed to EU citizens? There's been a rapid rise in the number of British nationals living in the Netherlands applying to become Dutch since the UK voted in a referendum to leave the European Union. Before Brexit, barely anyone made the switch. In most cases, Dutch law requires people taking Dutch citizenship to renounce their previous nationality.")
+          })
+      })
+      it('POST / return status 400 Bad Request for missed required body field', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: "Passports and nationality: The Brits 'going Dutch' over Brexit",
+            topic: 'mitch',
+            username: 'butter_bridge',
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Bad Request')
+          })
+      });
+      it('POST / return status 400 Bad Request for schema violations', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: "Passports and nationality: The Brits 'going Dutch' over Brexit",
+            topic: 'mitch',
+            username: 'butter_bridge',
+            body: 982729387283468
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Bad Request')
+          })
+      });
+      it('POST / return status 400 Bad Request for wrong keys inputted', () => {
+        return request(app)
+          .post('/api/articles')
+          .send({
+            title: "Passports and nationality: The Brits 'going Dutch' over Brexit",
+            topic: 'mitch',
+            writer: 'butter_bridge',
+            body: 'Would you sacrifice your nationality to secure the rights guaranteed to EU citizens? '
+          })
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Bad Request')
+          })
+      });
+      it('DELETE / returns status 204 and no content', () => {
+        return request(app)
+          .delete('/api/articles/2')
+          .expect(204)
+      });
+      it('DELETE / returns status 400 Bad Request if not valid article id', () => {
+        return request(app)
+          .delete('/api/articles/snake')
+          .expect(400)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Bad Request')
+          })
+      });
+      it('DELETE / returns status 404 Page Not Found if not existing article_id', () => {
+        return request(app)
+          .delete('/api/articles/376287')
+          .expect(404)
+          .then(({
+            body
+          }) => {
+            expect(body.msg).to.equal('Page Not Found')
           })
       });
     });

@@ -1,5 +1,6 @@
 const {
-  selectAllTopics
+  selectAllTopics,
+  addNewTopic
 } = require('../models/topics-model')
 
 exports.getAllTopics = (req, res, next) => {
@@ -8,4 +9,15 @@ exports.getAllTopics = (req, res, next) => {
       topics
     })
   }).catch(err => next(err))
+}
+
+exports.postNewTopic = (req, res, next) => {
+  console.log('in controller')
+  addNewTopic(req.body).then(([topic]) => {
+    console.log(topic)
+    res.status(201).send({
+      topic
+    })
+  })
+    .catch(err => next(err))
 }

@@ -2,14 +2,23 @@
 
 ## Background
 
-This API was built to be used in the Northcoders News Sprint during the Front End block of the course. Its database is PSQL and can be interacted with using [Knex](https://knexjs.org). It has a series of endpoints built to recover combination of topics, articles, users and comments.
+This API was built to be used in the Northcoders News Sprint during the Front End block of the course. Its database is PSQL and can be interacted with using [Knex](https://knexjs.org. It has a series of endpoints that each serve up individual pieces of topic, article, user and comment data.
 
 ## Step 1 - Install dependencies
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Clone this repo:
 
-Prerequisites
-What things you need to install the software and how to install them
+```bash
+git clone https://github.com/northcoders/be-nc-news
+
+cd be-nc-news
+
+npm i
+```
+
+These instructions will get you a copy of the project up, installing all dependencies and running on your local machine for development and testing purposes. 
+
+See deployment for notes on how to deploy the project on a live system.
 
 Give examples
 Installing

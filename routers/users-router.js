@@ -1,6 +1,8 @@
 const userRouter = require('express').Router()
 const {
-  getUserByUsername
+  getUserByUsername,
+  postNewUser,
+  getAllUsers
 } = require('../controllers/user-controller')
 
 const {
@@ -14,6 +16,8 @@ userRouter
 
 userRouter
   .route('/')
+  .post(postNewUser)
+  .get(getAllUsers)
   .all(methodNotAllowed)
 
 

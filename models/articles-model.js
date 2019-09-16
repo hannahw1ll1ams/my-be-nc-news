@@ -58,7 +58,18 @@ exports.addCommentToArticle = ({
     .returning('*')
 }
 
-
+exports.addArticle = ({ title, topic, username, body }) => {
+  const author = username;
+  if (typeof (body) === 'number') {
+    return Promise.reject({
+      status: 400,
+      msg: 'Bad Request'
+    })
+  }
+  return connection.insert({ author, title, topic, body })
+    .into('articles')
+    .returning('*')
+}
 
 
 exports.selectCommentsByArticleId = ({
@@ -113,5 +124,19 @@ exports.getAllArticles = ({
           msg: 'Page Not Found'
         })
       } else return articles
+    })
+}
+
+exports.selectArticleAndRemove = ({ article_id }) => {
+  return connection('articles')
+    .where('articles.article_id', '=', article_id)
+    .del()
+    .then(article => {
+      if (article === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: 'Page Not Found'
+        })
+      } else return article
     })
 }
