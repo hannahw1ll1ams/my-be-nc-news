@@ -1,7 +1,8 @@
 const topicRouter = require('express').Router()
 const {
   getAllTopics,
-  postNewTopic
+  postNewTopic,
+  removeSelectedTopicByTopic
 } = require('../controllers/topic-controller')
 
 const {
@@ -15,7 +16,8 @@ topicRouter
   .all(methodNotAllowed);
 
 topicRouter
-  .route('/:username')
+  .route('/:topic')
+  .delete(removeSelectedTopicByTopic)
   .all(methodNotAllowed);
 
 module.exports = topicRouter;

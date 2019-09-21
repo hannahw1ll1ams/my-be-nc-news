@@ -12,3 +12,17 @@ exports.addNewTopic = ({ slug, description }) => {
     .into('topics')
     .returning('*')
 }
+
+// exports.selectTopicAndRemove = ({ topic }) => {
+//   return connection('topics')
+//     .where('topics.slug', '=', topic)
+//     .del()
+//     .then(topic => {
+//       if (topic === 0) {
+//         return Promise.reject({
+//           status: 404,
+//           msg: 'Page Not Found'
+//         })
+//       } else return topic
+//     })
+// }

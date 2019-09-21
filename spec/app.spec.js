@@ -91,6 +91,11 @@ describe('app', () => {
             expect(body.msg).to.equal('Bad Request')
           })
       });
+      // it('DELETE /:topic returns status 204 and no content', () => {
+      //   return request(app)
+      //     .delete('/api/topics/food')
+      //     .expect(204)
+      // });
     });
 
     describe('/users', () => {
