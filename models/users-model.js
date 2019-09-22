@@ -26,4 +26,12 @@ exports.addNewUser = ({ username, avatar_url, name }) => {
 exports.fetchAllUsers = () => {
   return connection.select('username', 'avatar_url', 'name')
     .from('users')
+    .then(users => {
+      if (users.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: 'Page Not Found'
+        })
+      } else return users
+    })
 }

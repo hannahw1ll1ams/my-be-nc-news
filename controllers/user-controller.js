@@ -28,4 +28,5 @@ exports.getAllUsers = (req, res, next) => {
       users
     })
   })
+    .catch(err => next(err))
 }
