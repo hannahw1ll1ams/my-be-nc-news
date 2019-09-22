@@ -4,14 +4,14 @@ const { getAllArticles } = require('../models/articles-model')
 exports.selectAllTopics = () => {
   return connection.select('*')
     .from("topics")
-    .then(topics => {
-      if (topics.length === 0) {
-        return Promise.reject({
-          status: 404,
-          msg: 'Page Not Found'
-        })
-      } else return topics
-    })
+  // .then(topics => {
+  //   if (topics.length === 0) {
+  //     return Promise.reject({
+  //       status: 404,
+  //       msg: 'Page Not Found'
+  //     })
+  //   } else return topics
+  // })
 }
 
 
@@ -21,12 +21,17 @@ exports.addNewTopic = ({ slug, description }) => {
     .returning('*')
 }
 
-// exports.selectTopicAndRemove = ({ topic }) => {
-//   //if a topic has articles then don't delete
-//   //if a topic exists but doesn't have any articles then delete
 
-//   //looking to see if there are any articles on a topic
-//   exports.getAllArticles(topic)
+
+// exports.selectTopicAndRemove = ({ topic }) => {
+
+//   //can i see if get all Articles returns a error of page not found ie. article length was 0, AND if selectAllTopics says topic exists, then can do the deleting.
+
+
+//   Promise.all(exports.selectAllTopics(), exports.getAllArticles(topic))
+//   .then(articles => {
+//     if (articles === err) 
+//   })
 //     //only if there are articles are on topic will anything come back
 //     .then(articles => {
 //       //if there are articles on a topic then can't delete this topic.
