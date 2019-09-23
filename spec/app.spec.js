@@ -199,14 +199,13 @@ describe('app', () => {
       //       expect(body.msg).to.equal('Bad Request')
       //     })
       // });
-      it('GET / returns status 200 & returns array containing specific user object', () => {
+      it.only('GET / returns status 200 & returns array containing specific user object', () => {
         return request(app)
           .get('/api/users')
           .expect(200)
           .then(({
             body
           }) => {
-            console.log(body)
             expect(body).to.be.an('object')
             expect(body.users).to.be.an('array')
             expect(body.users[0]).to.have.keys('username', 'avatar_url', 'name')
@@ -220,7 +219,7 @@ describe('app', () => {
     });
 
 
-    describe.only('/articles', () => {
+    describe('/articles', () => {
       it('GET / returns status 200 & returns array containing specific article object with all the correct keys and a comment count of all the comments left by this id', () => {
         return request(app)
           .get('/api/articles/2')

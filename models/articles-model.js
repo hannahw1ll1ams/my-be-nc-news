@@ -122,9 +122,6 @@ exports.getAllArticles = ({
       return Promise.all([articles, selectAllTopics()])
     })
     .then(response => {
-      console.log(response[0].length === 0)
-      console.log((response[1].filter(topics => topics.slug === topic).length > 0))
-
       if (response[0].length === 0 && (response[1].filter(topics => topics.slug === topic).length > 0)) {
         return response[0]
       }
