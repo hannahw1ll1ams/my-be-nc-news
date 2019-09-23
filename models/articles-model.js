@@ -1,5 +1,6 @@
 const connection = require("../db/connection");
 
+const { selectAllTopics } = require('../models/topics-model')
 
 exports.selectArticle = ({
   article_id
@@ -118,12 +119,21 @@ exports.getAllArticles = ({
       }
     })
     .then(articles => {
-      if (articles.length === 0) {
+      return Promise.all([articles, selectAllTopics()])
+    })
+    .then(response => {
+      console.log(response[0].length === 0)
+      console.log((response[1].filter(topics => topics.slug === topic).length > 0))
+
+      if (response[0].length === 0 && (response[1].filter(topics => topics.slug === topic).length > 0)) {
+        return response[0]
+      }
+      if (response[0].length === 0) {
         return Promise.reject({
           status: 404,
           msg: 'Page Not Found'
         })
-      } else return articles
+      } else return response[0]
     })
 }
 

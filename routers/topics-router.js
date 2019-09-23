@@ -16,7 +16,6 @@ topicRouter
 
 topicRouter
   .route('/:topic')
-  // .delete(removeSelectedTopicByTopic)
   .all(methodNotAllowed);
 
 module.exports = topicRouter;
