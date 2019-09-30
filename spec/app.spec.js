@@ -77,20 +77,6 @@ describe('app', () => {
             expect(body.msg).to.equal('Bad Request')
           })
       });
-      it('POST / return status 400 Bad Request for wrong keys inputted', () => {
-        return request(app)
-          .post('/api/articles/5/comments')
-          .send({
-            slug: 'butter_bridge',
-            votes: 56
-          })
-          .expect(400)
-          .then(({
-            body
-          }) => {
-            expect(body.msg).to.equal('Bad Request')
-          })
-      });
     })
 
 
@@ -199,7 +185,7 @@ describe('app', () => {
       //       expect(body.msg).to.equal('Bad Request')
       //     })
       // });
-      it.only('GET / returns status 200 & returns array containing specific user object', () => {
+      it('GET / returns status 200 & returns array containing specific user object', () => {
         return request(app)
           .get('/api/users')
           .expect(200)
@@ -677,7 +663,7 @@ describe('app', () => {
             expect(body.articles[0].topic).to.equal('cats')
           })
       });
-      it('GET/ status 400 Bad Request when passed a sortby query by invalid column', () => {
+      it.only('GET/ status 400 Bad Request when passed a sortby query by invalid column', () => {
         return request(app)
           .get('/api/articles?sort_by=donkey')
           .expect(400)
