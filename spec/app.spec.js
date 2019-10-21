@@ -218,7 +218,7 @@ describe('app', () => {
             expect(body.article).to.have.keys('article_id', 'title', 'body', 'votes', 'topic', 'author', 'created_at', 'comment_count')
           })
       });
-      it('GET / returns status 404 responds an error message > Page Not Found for a article_id that does not exist', () => {
+      it('GET / returns status 404 responds an error message > Article Not Found for a article_id that does not exist', () => {
         return request(app)
           .get('/api/articles/9999999')
           .expect(404)
@@ -311,7 +311,7 @@ describe('app', () => {
             expect(body.msg).to.equal('Bad Request')
           })
       });
-      it('PATCH / return status 404 and message of Page Not Found if article id is not existing', () => {
+      it('PATCH / return status 404 and message of Article Not Found if article id is not existing', () => {
         return request(app)
           .patch('/api/articles/398742')
           .send({
@@ -321,7 +321,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.equal('Page Not Found')
+            expect(body.msg).to.equal('Article Not Found')
           })
       });
       it('PATCH / return status 400 and message of bad request if wrong type of data provided in request', () => {
@@ -378,7 +378,7 @@ describe('app', () => {
             expect(body.comment.body).to.equal("It is what it is...")
           })
       });
-      it('POST / return status 404 Page Not Found for not existing article id', () => {
+      it('POST / return status 404 Article Not Found for not existing article id', () => {
         return request(app)
           .post('/api/articles/100/comments')
           .send({
@@ -389,7 +389,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.equal("Page Not Found")
+            expect(body.msg).to.equal("Article Not Found")
           })
       });
       it('POST / return status 404 Page Not Found for valid article_id but wrong path typed', () => {
@@ -534,14 +534,14 @@ describe('app', () => {
             expect(body.msg).to.equal("Bad Request")
           })
       });
-      it('GET /returns status 404 Page Not Found for a not found article_id', () => {
+      it('GET /returns status 404 Article Not Found for a not found article_id', () => {
         return request(app)
           .get('/api/articles/1909248/comments?sort_by=author')
           .expect(404)
           .then(({
             body
           }) => {
-            expect(body.msg).to.equal("Page Not Found")
+            expect(body.msg).to.equal("Article Not Found")
           })
       });
       it('GET/:article_id/comments serves an empty array when article exists but has no comments', () => {
