@@ -225,7 +225,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.equal('Page Not Found')
+            expect(body.msg).to.equal('Article Not Found')
           })
       });
       it('GET / returns status 400 for invalid article_id, returns message of Bad Request', () => {
