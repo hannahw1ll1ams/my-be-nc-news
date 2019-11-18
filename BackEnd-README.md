@@ -15,7 +15,9 @@ These instructions will get you a copy of the project up, installing all depende
 - Node.js installed
 - PostgresSQL installed
 
-## Install dependencies
+## Installling
+
+Install dependencies
 
 Clone this repo:
 
@@ -65,4 +67,25 @@ const customConfig = {
 
 module.exports = { ...customConfig[ENV], ...baseConfig };
 
+```
+
+
+Create your test and dev databases
+
+```
+npm run setup-dbs
+```
+
+
+Start the dev server
+
+```
+npm run dev
+```
+
+## Running the tests
+
+
+```
+npm run t
 ```
