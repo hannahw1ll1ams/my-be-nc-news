@@ -170,21 +170,6 @@ describe('app', () => {
             expect(body.msg).to.equal('Bad Request')
           })
       });
-      // it.only('POST / return status 400 Bad Request when adding a username that already exists', () => {
-      //   return request(app)
-      //     .post('/api/users')
-      //     .send({
-      //       username: 'butter_bridge',
-      //       avatar_url: 'https://m.media-amazon.com/images/S/aplus-media/mg/dbf4301f-af40-46f2-9a87-a99deddcd9a2._SL300__.jpg',
-      //       name: 'jonny'
-      //     })
-      //     .expect(400)
-      //     .then(({
-      //       body
-      //     }) => {
-      //       expect(body.msg).to.equal('Bad Request')
-      //     })
-      // });
       it('GET / returns status 200 & returns array containing specific user object', () => {
         return request(app)
           .get('/api/users')
