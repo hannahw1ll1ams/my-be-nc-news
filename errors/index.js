@@ -1,5 +1,5 @@
 exports.handlePSQLErrors = (err, req, res, next) => {
-  console.log(err, '<-- PSQL error')
+  // console.log(err, '<-- PSQL error')
   const psqlBadRequestCodes = {
     '22P02': {
       status: 400,
@@ -27,7 +27,7 @@ exports.handlePSQLErrors = (err, req, res, next) => {
 
 
 exports.handleCustomErrors = (err, req, res, next) => {
-  console.log(err, '<-- custom error')
+  // console.log(err, '<-- custom error')
   //for errors like request is valid, but doesn't exist
   if (err.status) {
     res.status(err.status).send({
@@ -38,7 +38,7 @@ exports.handleCustomErrors = (err, req, res, next) => {
 
 
 exports.handleServerErrors = (err, req, res, next) => {
-  console.log(err, '<-- server error')
+  // console.log(err, '<-- server error')
   res.sendStatus(500).send({
     msg: "500 error"
   });

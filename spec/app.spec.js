@@ -482,7 +482,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            console.log(body)
             expect(body.comments).to.be.sortedBy('created_at', {
               descending: true
             })
@@ -541,7 +540,7 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            expect(body.msg).to.equal("Page Not Found")
+            expect(body.msg).to.equal("Article Not Found")
           })
       });
       it('GET/:article_id/comments serves an empty array when article exists but has no comments', () => {
@@ -551,7 +550,6 @@ describe('app', () => {
           .then(({
             body
           }) => {
-            console.log(body)
             expect(body.comments).to.be.an('array')
             expect(body.comments).to.eql([])
           })
@@ -663,7 +661,7 @@ describe('app', () => {
             expect(body.articles[0].topic).to.equal('cats')
           })
       });
-      it.only('GET/ status 400 Bad Request when passed a sortby query by invalid column', () => {
+      it('GET/ status 400 Bad Request when passed a sortby query by invalid column', () => {
         return request(app)
           .get('/api/articles?sort_by=donkey')
           .expect(400)
@@ -1038,20 +1036,6 @@ describe('app', () => {
             body
           }) => {
             expect(body.msg).to.equal('Page Not Found')
-          })
-      });
-    });
-
-    xdescribe('/', () => {
-      it('GET / returns status 200 and JSON object describing all the available endpoints on your API', () => {
-        return request(app)
-          .get('/api')
-          .expect(200)
-          .then(({
-            body
-          }) => {
-            expect(body.endpoints[0]).to.eql({
-            })
           })
       });
     });
